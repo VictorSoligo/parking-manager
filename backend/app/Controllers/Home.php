@@ -2,10 +2,18 @@
 
 namespace App\Controllers;
 
+use CodeIgniter\API\ResponseTrait;
+
 class Home extends BaseController
 {
-    public function index(): string
+    use ResponseTrait;
+
+    public function index()
     {
-        return view('welcome_message');
+        $data = [
+            'message' => 'Hello world',
+        ];
+
+        return $this->respond($data);
     }
 }
