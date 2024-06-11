@@ -5,16 +5,4 @@ RUN apt-get -y update \
 
 RUN docker-php-ext-install intl mysqli pdo_mysql soap zip
 
-COPY --from=composer:2.0 /usr/bin/composer /usr/local/bin/composer
-
-WORKDIR /backend
-
-COPY ./composer.* .
-RUN composer install
-RUN mkdir -p writable/cache
-
-ENV CI_ENVIRONMENT=development
-
-EXPOSE 8080
-
-CMD ["php", "spark", "serve", "--host", "0.0.0.0"]
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer

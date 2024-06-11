@@ -1,73 +1,42 @@
 {
-  "name": "codeigniter4projects/playground",
-  "description": "A space to learn and experience CodeIgniter 4",
-  "license": "MIT",
-  "type": "project",
-  "keywords": [
-    "codeigniter",
-    "codeigniter4"
-  ],
-  "authors": [
-    {
-      "name": "Matthew Gatner",
-      "email": "mgatner@tattersoftware.com",
-      "homepage": "https://tattersoftware.com",
-      "role": "Developer"
+    "name": "codeigniter4/appstarter",
+    "description": "CodeIgniter4 starter app",
+    "license": "MIT",
+    "type": "project",
+    "homepage": "https://codeigniter.com",
+    "support": {
+        "forum": "https://forum.codeigniter.com/",
+        "source": "https://github.com/codeigniter4/CodeIgniter4",
+        "slack": "https://codeigniterchat.slack.com"
+    },
+    "require": {
+        "php": "^8.1",
+        "codeigniter4/framework": "^4.0"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.9",
+        "mikey179/vfsstream": "^1.6",
+        "phpunit/phpunit": "^10.5.16"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "exclude-from-classmap": [
+            "**/Database/Migrations/**"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Support\\": "tests/_support"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit"
     }
-  ],
-  "homepage": "https://codeigniter.com",
-  "support": {
-    "forum": "http://forum.codeigniter.com/",
-    "source": "https://github.com/codeigniter4projects/playground",
-    "slack": "https://codeigniterchat.slack.com"
-  },
-  "require": {
-    "php": "^7.4 || ^8.0",
-    "codeigniter4/framework": "^4.3"
-  },
-  "require-dev": {
-    "psr/container": "2.0.2",
-    "codeigniter4/devkit": "^1.0",
-    "tatter/patches": "^2.1",
-    "kint-php/kint": "^5.1",
-    "codeigniter/phpstan-codeigniter": "^1.4"
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "autoload": {
-    "exclude-from-classmap": [
-      "**/Database/Migrations/**"
-    ]
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Tests\\Support\\": "tests/_support"
-    }
-  },
-  "config": {
-    "allow-plugins": {
-      "phpstan/extension-installer": true
-    }
-  },
-  "scripts": {
-    "analyze": "phpstan analyze",
-    "ci": [
-      "Composer\\Config::disableProcessTimeout",
-      "@deduplicate",
-      "@analyze",
-      "@test",
-      "@inspect",
-      "rector process",
-      "@style"
-    ],
-    "cs": "php-cs-fixer fix --ansi --verbose --dry-run --diff",
-    "cs-fix": "php-cs-fixer fix --ansi --verbose --diff",
-    "style": "@cs-fix",
-    "deduplicate": "phpcpd app/ src/",
-    "inspect": "deptrac analyze --cache-file=build/deptrac.cache",
-    "mutate": "infection --threads=2 --skip-initial-tests --coverage=build/phpunit",
-    "patch": "patch",
-    "retool": "retool",
-    "test": "phpunit"
-  }
 }

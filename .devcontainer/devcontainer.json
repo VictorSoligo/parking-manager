@@ -1,6 +1,6 @@
 {
   "name": "parking-manager",
-  "dockerComposeFile": "docker-compose.yml",
+  "dockerComposeFile": "docker-compose.yaml",
   "service": "backend",
   "workspaceFolder": "/backend",
   "customizations": {
@@ -17,6 +17,5 @@
           "zobo.php-intellisense"
       ]
     }
-  },
-  "remoteUser": "vscode"
+  }
 }
