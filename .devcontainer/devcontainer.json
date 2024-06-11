@@ -1,20 +1,21 @@
 {
   "name": "parking-manager",
   "dockerComposeFile": "docker-compose.yaml",
-  "service": "backend",
-  "workspaceFolder": "/backend",
+  "service": "app",
+  "workspaceFolder": "/app",
   "customizations": {
     "vscode": {
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash"
       },
       "extensions": [
-          "csstools.postcss",
           "ms-vscode.vscode-typescript-next",
-          "bradlc.vscode-tailwindcss",
           "xdebug.php-debug",
           "bmewburn.vscode-intelephense-client",
-          "zobo.php-intellisense"
+          "zobo.php-intellisense",
+          "dbaeumer.vscode-eslint",
+          "visualstudioexptteam.vscodeintell",
+          "visualstudioexptteam.intellicode-api-usage-examples"
       ]
     }
   }
