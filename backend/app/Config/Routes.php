@@ -5,6 +5,11 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
-$routes->post('/users/sessions', 'Login::index');
-$routes->post('/users', 'Register::index'); // ['filter' => 'authFilter']
+$routes->get('/', 'Home::handle');
+
+$routes->group('users', function ($routes) {
+  $routes->post('', 'Register::handle');
+  $routes->post('sessions', 'Login::handle');
+});
+
+// ['filter' => 'authFilter']

@@ -11,7 +11,7 @@ class Login extends BaseController
 {
     use ResponseTrait;
      
-    public function index()
+    public function handle()
     {
         $userModel = new UserModel();
   

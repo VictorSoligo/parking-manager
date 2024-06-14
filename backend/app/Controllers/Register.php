@@ -10,11 +10,12 @@ class Register extends BaseController
 {
     use ResponseTrait;
  
-    public function index()
+    public function handle()
     {
         $rules = [
             'email' => ['rules' => 'required|min_length[4]|max_length[255]|valid_email|is_unique[users.email]'],
             'password' => ['rules' => 'required|min_length[8]|max_length[255]'],
+            'name' => ['rules' => 'required|min_length[4]|max_length[255]']
         ];
         
         $isValidationSuccess = $this->validate($rules);
@@ -33,6 +34,7 @@ class Register extends BaseController
         $data = [
             'email'    => $this->request->getVar('email'),
             'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
+            'name'     => $this->request->getVar('name'),
         ];
 
         $model->save($data);
