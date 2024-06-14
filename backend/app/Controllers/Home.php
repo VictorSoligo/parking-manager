@@ -11,7 +11,7 @@ class Home extends BaseController
     public function index()
     {
         $data = [
-            'message' => 'Hello world',
+            'message' => 'ok',
         ];
 
         return $this->respond($data);
