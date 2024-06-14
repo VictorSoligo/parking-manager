@@ -24,7 +24,14 @@ class AddUser extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '255',
             ],
-            'created_at DATETIME DEFAULT CURRENT_TIMESTAMP',
+            'name' => [
+                'type' => 'VARCHAR',
+                'constraint' => '255',
+            ],
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true
+            ],
             'updated_at' => [
                 'type' => 'DATETIME',
                 'null' => true
