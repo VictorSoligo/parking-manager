@@ -7,4 +7,4 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 $routes->post('/users/sessions', 'Login::index');
-$routes->post('/users', 'Register::index', ['filter' => 'authFilter']);
+$routes->post('/users', 'Register::index'); // ['filter' => 'authFilter']

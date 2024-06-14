@@ -13,14 +13,14 @@ class AuthFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         $jwtSecret = "asdknasdkjnaskjdakjsdnkajsd33";
-        $badResponse = "Acesso negado";
+        $badRequestBody = "{\"message\": \"Acesso negado\"}";
 
         $athorizationHeader = $request->getHeaderLine("Authorization");
 
         if (!$athorizationHeader) {
             $response = service('response');
-            $response->setBody($badResponse);
             $response->setStatusCode(401);
+            $response->setBody($badRequestBody);
             
             return $response;
         }
@@ -29,8 +29,8 @@ class AuthFilter implements FilterInterface
   
         if(!$token) {
             $response = service('response');
-            $response->setBody($badResponse);
             $response->setStatusCode(401);
+            $response->setBody($badRequestBody);
 
             return $response;
         }
@@ -39,8 +39,8 @@ class AuthFilter implements FilterInterface
             JWT::decode($token, new Key($jwtSecret, 'HS256'));
         } catch (\Throwable $th) {
             $response = service('response');
-            $response->setBody($badResponse);
             $response->setStatusCode(401);
+            $response->setBody($badRequestBody);
 
             return $response;
         }
