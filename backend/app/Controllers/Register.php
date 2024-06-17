@@ -15,7 +15,8 @@ class Register extends BaseController
         $rules = [
             'email' => ['rules' => 'required|min_length[4]|max_length[255]|valid_email|is_unique[users.email]'],
             'password' => ['rules' => 'required|min_length[8]|max_length[255]'],
-            'name' => ['rules' => 'required|min_length[4]|max_length[255]']
+            'name' => ['rules' => 'required|min_length[4]|max_length[255]'],
+            'role' => ['rules' => 'required|in_list[admin,manager]'],
         ];
         
         $isValidationSuccess = $this->validate($rules);
@@ -35,6 +36,7 @@ class Register extends BaseController
             'email'    => $this->request->getVar('email'),
             'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
             'name'     => $this->request->getVar('name'),
+            'role'     => $this->request->getVar('role'),
         ];
 
         $model->save($data);

@@ -38,6 +38,7 @@ class Login extends BaseController
  
         $payload = array(
             "sub" => $user['id'],
+            "role" => $user['role'],
             "iat" => $iat, 
             "exp" => $exp, 
         );

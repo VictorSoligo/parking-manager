@@ -28,6 +28,11 @@ class AddUser extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '255',
             ],
+            'role' => [
+                'type' => "ENUM('admin','manager')",
+                'default' => 'manager',
+                'null' => false,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true

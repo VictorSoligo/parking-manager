@@ -8,8 +8,6 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::handle');
 
 $routes->group('users', function ($routes) {
-  $routes->post('', 'Register::handle');
+  $routes->post('', 'Register::handle', ['filter' => 'admin']);
   $routes->post('sessions', 'Login::handle');
 });
-
-// ['filter' => 'authFilter']
