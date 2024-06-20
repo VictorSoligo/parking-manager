@@ -9,5 +9,6 @@ $routes->get('/', 'Home::handle');
 
 $routes->group('users', function ($routes) {
   $routes->post('', 'Register::handle', ['filter' => 'admin']);
+  $routes->get('', 'FetchUsers::handle', ['filter' => 'admin']);
   $routes->post('sessions', 'Login::handle');
 });
