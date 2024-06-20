@@ -41,6 +41,6 @@ class Register extends BaseController
 
         $model->save($data);
             
-        return $this->respond(null, 201);
+        return $this->respondCreated();
     }
 }
