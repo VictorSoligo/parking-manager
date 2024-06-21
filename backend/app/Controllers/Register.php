@@ -30,7 +30,7 @@ class Register extends BaseController
             return $this->fail($response , 400);
         }
   
-        $model = new UserModel();
+        $userModel = new UserModel();
 
         $data = [
             'email'    => $this->request->getVar('email'),
@@ -39,7 +39,7 @@ class Register extends BaseController
             'role'     => $this->request->getVar('role'),
         ];
 
-        $model->save($data);
+        $userModel->save($data);
             
         return $this->respondCreated();
     }

@@ -10,6 +10,8 @@ $routes->get('/', 'Home::handle');
 $routes->group('users', function ($routes) {
   $routes->post('', 'Register::handle', ['filter' => 'admin']);
   $routes->get('', 'FetchUsers::handle', ['filter' => 'admin']);
+  $routes->put('(:num)', 'EditUser::handle/$1', ['filter' => 'admin']);
+  
   $routes->get('profile', 'GetUserProfile::handle');
   $routes->post('sessions', 'Login::handle');
 });
@@ -17,5 +19,5 @@ $routes->group('users', function ($routes) {
 $routes->group('parkings', function ($routes) {
   $routes->get('', 'FetchParkings::handle', ['filter' => 'admin']);
   $routes->post('', 'CreateParking::handle', ['filter' => 'admin']);
-  $routes->put('(:num)', 'EditParking::handle/$1');
+  $routes->put('(:num)', 'EditParking::handle/$1', ['filter' => 'admin']);
 });

@@ -33,6 +33,11 @@ class AddUser extends Migration
                 'default' => 'manager',
                 'null' => false,
             ],
+            'parking_id' => [
+                'type' => 'INT',
+                'unsigned' => true,
+                'default' => null,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true
@@ -44,6 +49,7 @@ class AddUser extends Migration
         ]);
         
         $this->forge->addPrimaryKey('id');
+        $this->forge->addForeignKey('parking_id', 'parkings', 'id');
         $this->forge->createTable('users');
     }
   
