@@ -21,6 +21,7 @@ class AddParking extends Migration
             ],
             'cost_per_hour_in_cents' => [
                 'type' => 'INT',
+                'constraint' => 255,
                 'unsigned' => true,
             ],
             'created_at' => [

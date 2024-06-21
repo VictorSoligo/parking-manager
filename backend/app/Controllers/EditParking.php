@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\ParkingModel;
+use App\Models\UserModel;
 use CodeIgniter\API\ResponseTrait;
 
 class EditParking extends BaseController
@@ -25,6 +26,14 @@ class EditParking extends BaseController
             ];
 
             return $this->fail($response , 400);
+        }
+
+        $userModel = new UserModel();
+
+        $user = $userModel->find($this->request->sub);
+
+        if ($user['role'] == 'manager' && $user['parking_id'] != $parkingId) {
+            return $this->fail(['message' => 'Este estacionamento não é seu'] , 400);
         }
 
         $parkingModel = new ParkingModel();
