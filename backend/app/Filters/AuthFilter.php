@@ -36,7 +36,12 @@ class AuthFilter implements FilterInterface
         }
   
         try {
-            JWT::decode($token, new Key($jwtSecret, 'HS256'));
+            $rawPayload = JWT::decode($token, new Key($jwtSecret, 'HS256'));
+            $payload = (array) $rawPayload;
+
+            $request->sub = $payload['sub'];
+
+            return $request;
         } catch (\Throwable $th) {
             $response = service('response');
             $response->setStatusCode(401);

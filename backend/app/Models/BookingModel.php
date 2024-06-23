@@ -4,15 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserModel extends Model
+class BookingModel extends Model
 {
-    protected $table            = 'users';
+    protected $table            = 'bookings';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['email', 'password', 'name', 'role', 'parking_id'];
+    protected $allowedFields    = ['started_at', 'ended_at', 'car_plate', 'parking_id', 'space_id', 'cost_per_hour_in_cents', 'cost_in_cents', 'is_finished'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

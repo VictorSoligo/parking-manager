@@ -4,15 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserModel extends Model
+class ParkingSpaceModel extends Model
 {
-    protected $table            = 'users';
+    protected $table            = 'parking_spaces';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['email', 'password', 'name', 'role', 'parking_id'];
+    protected $allowedFields    = ['identification', 'is_filled', 'parking_id'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

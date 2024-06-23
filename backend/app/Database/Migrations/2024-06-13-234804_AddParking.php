@@ -1,10 +1,10 @@
 <?php
-  
+
 namespace App\Database\Migrations;
-  
+
 use CodeIgniter\Database\Migration;
-  
-class AddUser extends Migration
+
+class AddParking extends Migration
 {
     public function up()
     {
@@ -15,28 +15,14 @@ class AddUser extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'email' => [
-                'type' => 'VARCHAR',
-                'unique' => true,
-                'constraint' => '255',
-            ],
-            'password' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
-            ],
             'name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '255',
             ],
-            'role' => [
-                'type' => "ENUM('admin','manager')",
-                'default' => 'manager',
-                'null' => false,
-            ],
-            'parking_id' => [
+            'cost_per_hour_in_cents' => [
                 'type' => 'INT',
+                'constraint' => 255,
                 'unsigned' => true,
-                'default' => null,
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -49,12 +35,11 @@ class AddUser extends Migration
         ]);
         
         $this->forge->addPrimaryKey('id');
-        $this->forge->addForeignKey('parking_id', 'parkings', 'id');
-        $this->forge->createTable('users');
+        $this->forge->createTable('parkings');
     }
-  
+
     public function down()
     {
-        $this->forge->dropTable('users');
+        $this->forge->dropTable('parkings');
     }
 }
