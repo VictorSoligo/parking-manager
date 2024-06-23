@@ -26,4 +26,5 @@ $routes->group('parkings', function ($routes) {
   $routes->get('spaces/availables', 'FetchAvailableParkingSpaces::handle');
 
   $routes->post('bookings', 'ParkCar::handle');
+  $routes->post('bookings/exit', 'ExitCar::handle');
 });

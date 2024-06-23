@@ -80,7 +80,5 @@ class ParkCar extends BaseController
         } catch (\Throwable $th) {
             return $this->respond(['message' => 'Falha ao criar reserva'], 400);
         }
-
-        return $this->respondCreated();
     }
 }
