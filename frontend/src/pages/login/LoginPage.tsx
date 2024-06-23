@@ -13,8 +13,13 @@ import { AtSignIcon, LockIcon } from '@chakra-ui/icons'
 
 export const LoginPage = () => {
   return (
-    <Center h="100vh" bg="purple.200">
-      <Stack boxShadow="md" bg="whiteAlpha.900" p="20" rounded="md">
+    <Center h="100vh">
+      <Stack
+        boxShadow={'rgba(0, 0, 0, 0.24) 0px 3px 8px'}
+        bg="whiteAlpha.900"
+        p="20"
+        rounded="md"
+      >
         <Image
           src="https://icones.pro/wp-content/uploads/2022/07/icones-d-eclair-violet.png"
           maxW="70px"
@@ -24,7 +29,7 @@ export const LoginPage = () => {
         />
         <Heading as="h1">Log in.</Heading>
         <Text fontSize="lg" color="gray.600">
-          Please log in with the data you entered during registration
+          Por favor, faça seu login com os dados inserido durante o registro.
         </Text>
 
         <Formik
@@ -53,10 +58,10 @@ export const LoginPage = () => {
                 <InputField
                   name="password"
                   type="password"
-                  label="Password"
+                  label="Senha"
                   leftAddon={<LockIcon color="purple.500" />}
                 />
-                <Checkbox colorScheme="purple"> Keep me logged in</Checkbox>
+                <Checkbox colorScheme="purple"> Mantenha-me conectado</Checkbox>
                 <Button
                   isLoading={isSubmitting}
                   loadingText="Whispering to our servers"
@@ -79,7 +84,7 @@ export const LoginPage = () => {
             </Button>
           </Text> */}
           <Button colorScheme="purple" variant="link">
-            Forgot password?
+            Esqueceu seu senha?
           </Button>
         </Stack>
       </Stack>
