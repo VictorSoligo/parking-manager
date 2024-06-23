@@ -29,7 +29,7 @@ class CreateParkingSpace extends BaseController
 
         $userModel = new UserModel();
 
-        $user = $userModel->find($this->request->sub);
+        $user = $userModel->find($this->request->sub); 
 
         if (!$user['parking_id']) {
             return $this->fail(['message' => 'Usuário não possui um estacionamento'] , 400);
