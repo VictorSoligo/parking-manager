@@ -2,12 +2,11 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
-use CodeIgniter\API\ResponseTrait;
-use App\Models\ParkingSpaceModel;
+use App\Models\BookingModel;
 use App\Models\UserModel;
+use CodeIgniter\API\ResponseTrait;
 
-class FetchParkingSpaces extends BaseController
+class FetchFinishedBookings extends BaseController
 {
     use ResponseTrait;
 
@@ -21,10 +20,10 @@ class FetchParkingSpaces extends BaseController
             return $this->fail(['message' => 'Usuário não possui um estacionamento'] , 400);
         }
 
-        $parkingSpaceModel = new ParkingSpaceModel();
+        $bookingModel = new BookingModel();
 
-        $parkingSpaces = $parkingSpaceModel->where('parking_id', $user['parking_id'])->findAll();
+        $bookings = $bookingModel->where('parking_id', $user['parking_id'])->where('is_finished', 1)->orderBy('ended_at', 'desc')->findAll();
 
-        return $this->respond($parkingSpaces);
+        return $this->respond($bookings);
     }
 }

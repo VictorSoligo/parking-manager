@@ -61,6 +61,7 @@ class ExitCar extends BaseController
         $bookingData = [
             'ended_at' => $endedAt,
             'cost_in_cents' => 0,
+            'is_finished' => 1,
         ];
 
         $parkingSpaceData = [

@@ -66,6 +66,7 @@ class ParkCar extends BaseController
             'space_id' => $parkingSpace['id'],
             'cost_per_hour_in_cents' => $parking['cost_per_hour_in_cents'],
             'started_at' => date("Y-m-d H:i:s"),
+            'is_finished' => 0,
         ];
 
         $parkingSpaceData = [

@@ -51,6 +51,11 @@ class AddBooking extends Migration
                 'null' => true,
                 'default' => null,
             ],
+            'is_finished' => [
+                'type' => 'TINYINT',
+                'null' => false,
+                'default' => 0,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true

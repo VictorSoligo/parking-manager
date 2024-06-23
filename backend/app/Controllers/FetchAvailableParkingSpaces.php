@@ -17,6 +17,10 @@ class FetchAvailableParkingSpaces extends BaseController
 
         $user = $userModel->find($this->request->sub);
 
+        if (!$user['parking_id']) {
+            return $this->fail(['message' => 'Usuário não possui um estacionamento'] , 400);
+        }
+
         $parkingSpaceModel = new ParkingSpaceModel();
 
         $parkingSpaces = $parkingSpaceModel->where('parking_id', $user['parking_id'])->where('is_filled', 0)->findAll();

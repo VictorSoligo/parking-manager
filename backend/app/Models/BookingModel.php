@@ -12,7 +12,7 @@ class BookingModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['started_at', 'ended_at', 'car_plate', 'parking_id', 'space_id', 'cost_per_hour_in_cents', 'cost_in_cents'];
+    protected $allowedFields    = ['started_at', 'ended_at', 'car_plate', 'parking_id', 'space_id', 'cost_per_hour_in_cents', 'cost_in_cents', 'is_finished'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
