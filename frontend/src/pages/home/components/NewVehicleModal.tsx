@@ -19,8 +19,7 @@ interface NewVehicleModalProps {
   isOpen: boolean
   onClose: () => void
   onSave: (vehicle: Vehicle) => void
-  hourlyRate: number // Assume hourly rate is passed as a prop from the parent component
-  defaultVehicleType: string // Assume vehicle type is passed as a prop from the parent component
+  hourlyRate: number
 }
 
 export const NewVehicleModal: React.FC<NewVehicleModalProps> = ({
@@ -28,7 +27,6 @@ export const NewVehicleModal: React.FC<NewVehicleModalProps> = ({
   onClose,
   onSave,
   hourlyRate,
-  defaultVehicleType,
 }) => {
   const [plate, setPlate] = useState('')
   const [ownerName, setOwnerName] = useState('')
@@ -37,11 +35,10 @@ export const NewVehicleModal: React.FC<NewVehicleModalProps> = ({
   const handleSave = () => {
     const newVehicle: Vehicle = {
       id: Date.now(),
-      vehicleType: defaultVehicleType,
       plate,
       ownerName,
       ownerCpf,
-      entryTime: new Date().toLocaleTimeString().slice(0, 5), // Automatically set entry time to current time
+      entryTime: new Date().toLocaleTimeString().slice(0, 5),
       hourlyRate,
       totalDue: 0,
     }

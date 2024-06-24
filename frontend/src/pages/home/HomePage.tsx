@@ -16,7 +16,6 @@ export const HomePage = () => {
   const [vehicles, setVehicles] = useState<VehicleList>([
     {
       id: 1,
-      vehicleType: 'Carro',
       plate: 'ABC-1234',
       ownerName: 'Vitão da XJ6',
       ownerCpf: '123.456.789-00',
@@ -27,6 +26,8 @@ export const HomePage = () => {
   ])
   const [vehicleToRemove, setVehicleToRemove] = useState<Vehicle | null>(null)
   const toast = useToast()
+
+  const defaultHourlyRate = 5
 
   const handleRemoveVehicle = (id: number, exitTime: string) => {
     const vehicle = vehicles.find((v) => v.id === id)
@@ -77,6 +78,7 @@ export const HomePage = () => {
         isOpen={isOpen}
         onClose={onClose}
         onSave={(newVehicle: Vehicle) => setVehicles([...vehicles, newVehicle])}
+        hourlyRate={defaultHourlyRate}
       />
       {vehicleToRemove && (
         <RemoveVehicleModal
