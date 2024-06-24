@@ -2,11 +2,11 @@
 
 namespace App\Controllers;
 
-use App\Models\BookingModel;
-use App\Models\UserModel;
+use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
+use App\Models\UserModel;
 
-class FetchFinishedBookings extends BaseController
+class FetchActiveBookings extends BaseController
 {
     use ResponseTrait;
 
@@ -25,7 +25,7 @@ class FetchFinishedBookings extends BaseController
         $builder = $db->table('bookings');
         $builder->select('bookings.*, parking_spaces.identification AS space_identification');
         $builder->join('parking_spaces', 'bookings.space_id = parking_spaces.id');
-        $builder->where('bookings.is_finished = 1');
+        $builder->where('bookings.is_finished = 0');
 
         $bookings = $builder->get()->getResultArray();
 
