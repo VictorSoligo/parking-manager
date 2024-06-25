@@ -8,19 +8,19 @@ import {
   Tbody,
   useDisclosure,
 } from '@chakra-ui/react'
-import { NewParkingModal } from './NewParkingModal'
+import { NewUserModal } from './NewUserModal'
 
-export const ParkingTab = () => {
+export const UserTab = () => {
   const {
-    isOpen: isParkingModalOpen,
-    onOpen: onOpenParkingModal,
-    onClose: onCloseParkingModal,
+    isOpen: isUserModalOpen,
+    onOpen: onOpenUserModal,
+    onClose: onCloseUserModal,
   } = useDisclosure()
 
   return (
     <>
-      <Button colorScheme="blue" onClick={onOpenParkingModal} mb={4}>
-        Novo estacionamento
+      <Button colorScheme="blue" onClick={onOpenUserModal} mb={4}>
+        Novo usuário
       </Button>
 
       <Box
@@ -34,19 +34,16 @@ export const ParkingTab = () => {
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th>Nome do Estacionamento</Th>
-              <Th>Valor por Hora</Th>
+              <Th>Nome</Th>
+              <Th>Email</Th>
+              <Th>Role</Th>
             </Tr>
           </Thead>
-
           <Tbody></Tbody>
         </Table>
       </Box>
 
-      <NewParkingModal
-        isOpen={isParkingModalOpen}
-        onClose={onCloseParkingModal}
-      />
+      <NewUserModal isOpen={isUserModalOpen} onClose={onCloseUserModal} />
     </>
   )
 }

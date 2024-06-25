@@ -34,13 +34,14 @@ export const Header: React.FC = () => {
   }
 
   return (
-    <Box px={4} boxShadow={'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px'} w="100%">
-      <Flex h={16} align="center" justifyContent="space-between" mx={'4%'}>
+    <Box px={8} boxShadow={'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px'} w="100%">
+      <Flex h={16} align="center" justifyContent="space-between">
         <Flex alignItems="center">
-          <Text fontSize="lg" fontWeight="bold" color="black" mr={8}>
+          <Text fontSize="lg" fontWeight="bold" color="black">
             Parking Manager
           </Text>
         </Flex>
+
         <Flex alignItems="center">
           <Menu>
             <MenuButton

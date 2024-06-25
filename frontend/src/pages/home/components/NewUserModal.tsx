@@ -13,31 +13,21 @@ import {
   Input,
   Select,
 } from '@chakra-ui/react'
-import { User } from '../../../types/user.types'
 
 interface NewUserModalProps {
   isOpen: boolean
   onClose: () => void
-  onSave: (user: User) => void
 }
 
 export const NewUserModal: React.FC<NewUserModalProps> = ({
   isOpen,
   onClose,
-  onSave,
 }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [role, setRole] = useState<'Admin' | 'Gerente'>('Gerente')
 
   const handleSave = () => {
-    const newUser: User = {
-      id: Date.now(),
-      name,
-      email,
-      role,
-    }
-    onSave(newUser)
     onClose()
   }
 
