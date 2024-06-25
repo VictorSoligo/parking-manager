@@ -19,6 +19,8 @@ $routes->group('users', function ($routes) {
 $routes->group('parkings', function ($routes) {
   $routes->get('', 'FetchParkings::handle', ['filter' => 'admin']);
   $routes->post('', 'CreateParking::handle', ['filter' => 'admin']);
+
+  $routes->get('info', 'GetParking::handle');
   $routes->put('', 'EditParking::handle');
   
   $routes->post('spaces', 'CreateParkingSpace::handle');
