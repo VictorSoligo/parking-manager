@@ -34,6 +34,7 @@ export const UserTab = () => {
         <Table variant="simple">
           <Thead>
             <Tr>
+              <Th>ID</Th>
               <Th>Nome</Th>
               <Th>Email</Th>
               <Th>Role</Th>

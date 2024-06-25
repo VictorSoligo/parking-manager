@@ -34,6 +34,7 @@ export const ParkingTab = () => {
         <Table variant="simple">
           <Thead>
             <Tr>
+              <Th>ID</Th>
               <Th>Nome do Estacionamento</Th>
               <Th>Valor por Hora</Th>
             </Tr>
