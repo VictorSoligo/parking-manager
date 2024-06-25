@@ -47,3 +47,63 @@ CodeIgniter é um framework de desenvolvimento web open-source para PHP, conheci
 
 CodeIgniter OverView (https://codeigniter.com/user_guide/concepts/index.html#)
 
+## Docker (https://docs.docker.com/engine/install/)
+Primeira instalação do docker, é possível executar o script auxiliar **oficial** para facilitar a instalação:
+
+```bash
+$ curl https://get.docker.com/ | sh
+```
+Depois de instalado, talvez seja necessário permitir que o Docker possa executar seus serviços, tradicionalmente através do *systemd*. 
+  * [O que é o systemd?](https://learn.microsoft.com/pt-br/windows/wsl/systemd#what-is-systemd-in-linux)
+  * [Habilitar systemd](https://learn.microsoft.com/pt-br/windows/wsl/systemd#how-to-enable-systemd)
+O Docker inicialmente precisa de privilégio de *super usuário*, nesse sentido, siga as instruções para habilitar acesso ao seu usuario (https://askubuntu.com/a/477554).
+
+```bash
+$ sudo groupadd docker
+$ sudo gpasswd -a $USER docker
+$ docker run hello-world # Se esse comando funcionar corretamente sem 'sudo', parabéns! Está tudo devidamente configurado. 
+```
+# Configuração do Docker
+## Dockerfile
+O Dockerfile define a imagem do Docker para o ambiente PHP. Aqui está um exemplo de Dockerfile
+```bash
+FROM php:8.3.7-cli
+RUN apt-get -y update \
+  && apt-get install -y libicu-dev libzip-dev libxml2-dev zip vim iputils-ping nodejs npm tmux
+RUN docker-php-ext-install intl mysqli pdo_mysql soap zip 
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+```
+## Dockercompose.yml
+Crie um arquivo chamado docker-compose.yml na raiz do projeto com o seguinte conteúdo:
+```bash
+services:
+  app:
+    build: .
+    container_name: app
+    init: true
+    volumes:
+      - ../:/app
+    command: sleep infinity
+    ports:
+      - '3000:3000'
+      - '8080:8080'
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:8.3.0
+    container_name: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=parkingmanager
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - database:/var/lib/mysql
+      
+volumes:
+  database:
+```
+
