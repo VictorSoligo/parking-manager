@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
-use App\Models\UserModel;
 
 class FetchUsers extends BaseController
 {
@@ -12,9 +11,12 @@ class FetchUsers extends BaseController
 
     public function handle()
     {
-        $userModel = new UserModel();
+        $db = \Config\Database::connect();
 
-        $users = $userModel->findAll();
+        $builder = $db->table('users');
+        $builder->select('id, name, email, role, parking_id, created_at, updated_at');
+
+        $users = $builder->get()->getResultArray();
 
         return $this->respond($users);
     }

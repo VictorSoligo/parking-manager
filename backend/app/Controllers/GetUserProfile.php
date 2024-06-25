@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use CodeIgniter\API\ResponseTrait;
-use App\Models\UserModel;
 
 class GetUserProfile extends BaseController
 {
@@ -13,9 +12,13 @@ class GetUserProfile extends BaseController
     {
         $userId = $this->request->sub;
 
-        $userModel = new UserModel();
+        $db = \Config\Database::connect();
 
-        $user = $userModel->where('id', $userId)->first();
+        $builder = $db->table('users');
+        $builder->select('id, name, email, role, parking_id, created_at, updated_at');
+        $builder->where('id', $userId);
+
+        $user = $builder->get()->getResultArray()[0];
 
         return $this->respond($user);
     }
