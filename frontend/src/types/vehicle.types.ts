@@ -1,6 +1,5 @@
 export interface Vehicle {
   id: number
-  vehicleType: string
   plate: string
   ownerName: string
   ownerCpf: string

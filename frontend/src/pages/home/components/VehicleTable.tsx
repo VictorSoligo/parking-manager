@@ -21,13 +21,6 @@ export const VehicleTable: React.FC<VehicleTableProps> = ({
               borderRight="1px solid"
               borderColor="gray.200"
             >
-              Tipo
-            </Th>
-            <Th
-              textAlign="center"
-              borderRight="1px solid"
-              borderColor="gray.200"
-            >
               Placa
             </Th>
             <Th
@@ -51,33 +44,12 @@ export const VehicleTable: React.FC<VehicleTableProps> = ({
             >
               Horário de Entrada
             </Th>
-            <Th
-              textAlign="center"
-              borderRight="1px solid"
-              borderColor="gray.200"
-            >
-              Valor por Hora (R$)
-            </Th>
-            <Th
-              textAlign="center"
-              borderRight="1px solid"
-              borderColor="gray.200"
-            >
-              Total a Pagar (R$)
-            </Th>
             <Th textAlign="center">Ação</Th>
           </Tr>
         </Thead>
         <Tbody>
           {vehicles.map((vehicle) => (
             <Tr key={vehicle.id}>
-              <Td
-                textAlign="center"
-                borderRight="1px solid"
-                borderColor="gray.200"
-              >
-                {vehicle.vehicleType}
-              </Td>
               <Td
                 textAlign="center"
                 borderRight="1px solid"
@@ -105,20 +77,6 @@ export const VehicleTable: React.FC<VehicleTableProps> = ({
                 borderColor="gray.200"
               >
                 {vehicle.entryTime}
-              </Td>
-              <Td
-                textAlign="center"
-                borderRight="1px solid"
-                borderColor="gray.200"
-              >
-                {vehicle.hourlyRate.toFixed(2)}
-              </Td>
-              <Td
-                textAlign="center"
-                borderRight="1px solid"
-                borderColor="gray.200"
-              >
-                {vehicle.totalDue.toFixed(2)}
               </Td>
               <Td textAlign="center">
                 <Button
