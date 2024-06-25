@@ -1,6 +1,7 @@
 export interface User {
-  id: number
+  id: string
   name: string
   email: string
-  role: 'Admin' | 'Gerente'
+  parking_id: string | null
+  role: 'admin' | 'manager'
 }

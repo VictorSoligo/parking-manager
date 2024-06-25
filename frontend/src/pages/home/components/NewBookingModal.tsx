@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { FC, useState } from 'react'
 import {
   Modal,
   ModalOverlay,
@@ -13,12 +13,12 @@ import {
   Input,
 } from '@chakra-ui/react'
 
-interface NewSpaceModalProps {
+interface NewBookingModalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-export const NewSpaceModal: React.FC<NewSpaceModalProps> = ({
+export const NewBookingModal: FC<NewBookingModalProps> = ({
   isOpen,
   onClose,
 }) => {
@@ -31,9 +31,12 @@ export const NewSpaceModal: React.FC<NewSpaceModalProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
+
       <ModalContent>
-        <ModalHeader>Cadastrar Nova Vaga</ModalHeader>
+        <ModalHeader>Nova reserva</ModalHeader>
+
         <ModalCloseButton />
+
         <ModalBody>
           <FormControl>
             <FormLabel>Nome da Vaga</FormLabel>
@@ -44,10 +47,12 @@ export const NewSpaceModal: React.FC<NewSpaceModalProps> = ({
             />
           </FormControl>
         </ModalBody>
+
         <ModalFooter>
           <Button colorScheme="blue" onClick={handleSave}>
             Salvar
           </Button>
+
           <Button onClick={onClose}>Cancelar</Button>
         </ModalFooter>
       </ModalContent>

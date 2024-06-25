@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import { Box, Button, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react'
 import { VehicleList, Vehicle } from '../../../types/vehicle.types'
 
@@ -7,10 +7,7 @@ interface VehicleTableProps {
   onRemove: (vehicle: Vehicle) => void
 }
 
-export const VehicleTable: React.FC<VehicleTableProps> = ({
-  vehicles,
-  onRemove,
-}) => {
+export const VehicleTable: FC<VehicleTableProps> = ({ vehicles, onRemove }) => {
   return (
     <Box overflowX="auto">
       <Table variant="simple">

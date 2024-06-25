@@ -22,6 +22,7 @@ import {
   FormLabel,
   useDisclosure,
 } from '@chakra-ui/react'
+import { useAuth } from '../../../hooks/useAuth'
 
 export const Header: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -29,18 +30,21 @@ export const Header: React.FC = () => {
   const [hourlyRate, setHourlyRate] = useState('')
   const [totalSpots, setTotalSpots] = useState('')
 
+  const { logout } = useAuth()
+
   const handleSave = () => {
     onClose()
   }
 
   return (
-    <Box px={4} boxShadow={'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px'} w="100%">
-      <Flex h={16} align="center" justifyContent="space-between" mx={'4%'}>
+    <Box px={8} boxShadow={'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px'} w="100%">
+      <Flex h={16} align="center" justifyContent="space-between">
         <Flex alignItems="center">
-          <Text fontSize="lg" fontWeight="bold" color="black" mr={8}>
+          <Text fontSize="lg" fontWeight="bold" color="black">
             Parking Manager
           </Text>
         </Flex>
+
         <Flex alignItems="center">
           <Menu>
             <MenuButton
@@ -66,10 +70,13 @@ export const Header: React.FC = () => {
                 boxSize={3}
               />
             </MenuButton>
+
             <MenuList>
               <MenuItem onClick={onOpen}>Editar estacionamento</MenuItem>
+
               <MenuDivider />
-              <MenuItem>Sair</MenuItem>
+
+              <MenuItem onClick={logout}>Sair</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
