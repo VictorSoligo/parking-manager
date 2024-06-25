@@ -56,7 +56,7 @@ $ curl https://get.docker.com/ | sh
 Depois de instalado, talvez seja necessário permitir que o Docker possa executar seus serviços, tradicionalmente através do *systemd*. 
   * [O que é o systemd?](https://learn.microsoft.com/pt-br/windows/wsl/systemd#what-is-systemd-in-linux)
   * [Habilitar systemd](https://learn.microsoft.com/pt-br/windows/wsl/systemd#how-to-enable-systemd)
-O Docker inicialmente precisa de privilégio de *super usuário*, nesse sentido, siga as instruções para habilitar acesso ao seu usuario (https://askubuntu.com/a/477554).
+O Docker inicialmente precisa de privilégio de super usuário, nesse sentido, siga as instruções para habilitar acesso ao seu usuario (https://askubuntu.com/a/477554).
 
 ```bash
 $ sudo groupadd docker
