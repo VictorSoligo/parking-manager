@@ -10,7 +10,7 @@ class EditParking extends BaseController
 {
     use ResponseTrait;
 
-    public function handle($parkingId)
+    public function handle()
     {
         $rules = [
             'name' => ['rules' => 'required|min_length[4]|max_length[255]'],
@@ -32,8 +32,8 @@ class EditParking extends BaseController
 
         $user = $userModel->find($this->request->sub);
 
-        if ($user['role'] == 'manager' && $user['parking_id'] != $parkingId) {
-            return $this->fail(['message' => 'Este estacionamento não é seu'] , 400);
+        if (!$user['parking_id']) {
+            return $this->fail(['message' => 'Usuário não possui estacionamento'] , 400);
         }
 
         $parkingModel = new ParkingModel();
@@ -43,7 +43,7 @@ class EditParking extends BaseController
             'cost_per_hour_in_cents' => $this->request->getVar('cost_per_hour_in_cents'),
         ];
 
-        $parkingModel->update($parkingId, $data);
+        $parkingModel->update($user['parking_id'], $data);
 
         return $this->respondNoContent();
     }
