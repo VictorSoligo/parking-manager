@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import {
   Box,
   Flex,
@@ -23,18 +23,29 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { useAuth } from '../../../hooks/useAuth'
+import { useEditParking } from '../../../hooks/useEditParking'
 
 export const Header: React.FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const [name, setName] = useState('')
-  const [hourlyRate, setHourlyRate] = useState('')
-  const [totalSpots, setTotalSpots] = useState('')
+  const [costPerHour, setCostPerHour] = useState('')
 
-  const { logout } = useAuth()
+  const { logout, user } = useAuth()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { mutateAsync } = useEditParking()
 
-  const handleSave = () => {
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault()
+
+    await mutateAsync({
+      costPerHourInCents: Number(costPerHour) * 100,
+      name,
+    })
+
     onClose()
   }
+
+  const isManagerWithParking =
+    !!user && user.role === 'manager' && !!user.parking_id
 
   return (
     <Box px={8} boxShadow={'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px'} w="100%">
@@ -58,8 +69,11 @@ export const Header: React.FC = () => {
             >
               <Avatar
                 size="sm"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTD3nS8DRDQ1YVjpMaMb1jGB7vItxSgnMiZ8KPYQ8AyBGznmOH67isMXNfjcGCnEqWOUk&usqp=CAU"
+                name={user?.name ?? ''}
+                bg="gray.500"
+                color="white"
               />
+
               <Box
                 position="absolute"
                 bottom={0}
@@ -72,9 +86,13 @@ export const Header: React.FC = () => {
             </MenuButton>
 
             <MenuList>
-              <MenuItem onClick={onOpen}>Editar estacionamento</MenuItem>
+              {isManagerWithParking && (
+                <>
+                  <MenuItem onClick={onOpen}>Editar estacionamento</MenuItem>
 
-              <MenuDivider />
+                  <MenuDivider />
+                </>
+              )}
 
               <MenuItem onClick={logout}>Sair</MenuItem>
             </MenuList>
@@ -83,47 +101,44 @@ export const Header: React.FC = () => {
       </Flex>
 
       <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Editar Estacionamento</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <FormControl id="name" mb={4}>
-              <FormLabel>Nome</FormLabel>
-              <Input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Nome do estacionamento"
-              />
-            </FormControl>
-            <FormControl id="hourlyRate" mb={4}>
-              <FormLabel>Valor por Hora (R$)</FormLabel>
-              <Input
-                type="number"
-                value={hourlyRate}
-                onChange={(e) => setHourlyRate(e.target.value)}
-                placeholder="Valor por hora"
-              />
-            </FormControl>
-            <FormControl id="totalSpots" mb={4}>
-              <FormLabel>Quantidade de Vagas</FormLabel>
-              <Input
-                type="number"
-                value={totalSpots}
-                onChange={(e) => setTotalSpots(e.target.value)}
-                placeholder="Quantidade de vagas"
-              />
-            </FormControl>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleSave}>
-              Salvar
-            </Button>
-            <Button variant="ghost" onClick={onClose}>
-              Cancelar
-            </Button>
-          </ModalFooter>
-        </ModalContent>
+        <form onSubmit={handleSubmit}>
+          <ModalOverlay />
+
+          <ModalContent>
+            <ModalHeader>Editar Estacionamento</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <FormControl id="name" mb={4}>
+                <FormLabel>Nome</FormLabel>
+                <Input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Nome do estacionamento"
+                />
+              </FormControl>
+
+              <FormControl mb={4}>
+                <FormLabel>Valor por Hora (R$)</FormLabel>
+                <Input
+                  type="number"
+                  placeholder="Valor por hora"
+                  value={costPerHour}
+                  onChange={(e) => setCostPerHour(e.target.value)}
+                />
+              </FormControl>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button variant="ghost" onClick={onClose} type="button">
+                Cancelar
+              </Button>
+
+              <Button colorScheme="blue" mr={3} type="submit">
+                Salvar
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </form>
       </Modal>
     </Box>
   )

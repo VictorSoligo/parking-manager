@@ -13,7 +13,7 @@ class Register extends BaseController
     public function handle()
     {
         $rules = [
-            'email' => ['rules' => 'required|min_length[4]|max_length[255]|valid_email|is_unique[users.email]'],
+            'email' => ['rules' => 'required|min_length[4]|max_length[255]|valid_email'],
             'password' => ['rules' => 'required|min_length[8]|max_length[255]'],
             'name' => ['rules' => 'required|min_length[4]|max_length[255]'],
             'role' => ['rules' => 'required|in_list[admin,manager]'],
@@ -31,6 +31,16 @@ class Register extends BaseController
         }
   
         $userModel = new UserModel();
+
+        $userWithSameEmail = $userModel->where('email', $this->request->getVar('email'));
+
+        if (isset($userWithSameEmail)) {
+            $response = [
+                'message' => 'Email já cadastrado'
+            ];
+
+            return $this->fail($response , 400);
+        }
 
         $data = [
             'email'    => $this->request->getVar('email'),
