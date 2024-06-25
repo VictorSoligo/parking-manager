@@ -21,26 +21,22 @@ import { Header } from './components/Header'
 import { VehicleTable } from './components/VehicleTable'
 import { NewVehicleModal } from './components/NewVehicleModal'
 import { RemoveVehicleModal } from './components/RemoveVehicleModal'
-import { NewParkingModal } from './components/NewParkingModal'
 import { NewUserModal } from './components/NewUserModal'
 import { Vehicle, VehicleList } from '../../types/vehicle.types'
-import { Parking } from '../../types/parking.types'
 import { User } from '../../types/user.types'
 import { NewSpaceModal } from './components/NewSpaceModal'
 import { Space } from '../../types/space.types'
+import { ParkingTab } from './components/ParkingTab'
 
 export const HomePage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+
   const {
     isOpen: isRemoveOpen,
     onOpen: onRemoveOpen,
     onClose: onRemoveClose,
   } = useDisclosure()
-  const {
-    isOpen: isParkingModalOpen,
-    onOpen: onOpenParkingModal,
-    onClose: onCloseParkingModal,
-  } = useDisclosure()
+
   const {
     isOpen: isUserModalOpen,
     onOpen: onOpenUserModal,
@@ -58,7 +54,7 @@ export const HomePage = () => {
       totalDue: 0,
     },
   ])
-  const [parkings, setParkings] = useState<Parking[]>([])
+
   const [users, setUsers] = useState<User[]>([])
   const [vehicleToRemove, setVehicleToRemove] = useState<Vehicle | null>(null)
 
@@ -120,6 +116,7 @@ export const HomePage = () => {
             >
               Novo Veículo
             </Button>
+
             <Box
               w="90%"
               p={4}
@@ -150,45 +147,11 @@ export const HomePage = () => {
               />
             )}
           </TabPanel>
+
           <TabPanel>
-            <Button colorScheme="blue" onClick={onOpenParkingModal} mb={4}>
-              Cadastrar Novo Estacionamento
-            </Button>
-            <Box
-              w="90%"
-              p={4}
-              borderWidth={1}
-              borderRadius="lg"
-              boxShadow="lg"
-              overflow="hidden"
-            >
-              <Table variant="simple">
-                <Thead>
-                  <Tr>
-                    <Th>Nome do Estacionamento</Th>
-                    <Th>Número de Vagas</Th>
-                    <Th>Valor por Hora</Th>
-                    <Th>Responsável</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {parkings.map((parking) => (
-                    <Tr key={parking.id}>
-                      <Td>{parking.name}</Td>
-                      <Td>{parking.totalSpots}</Td>
-                      <Td>R${parking.hourlyRate.toFixed(2)}</Td>
-                      <Td>{parking.manager}</Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </Box>
-            <NewParkingModal
-              isOpen={isParkingModalOpen}
-              onClose={onCloseParkingModal}
-              onSave={(newParking) => setParkings([...parkings, newParking])}
-            />
+            <ParkingTab />
           </TabPanel>
+
           <TabPanel>
             <Button colorScheme="blue" onClick={onOpenUserModal} mb={4}>
               Cadastrar Novo Usuário
@@ -226,6 +189,7 @@ export const HomePage = () => {
               onSave={(newUser) => setUsers([...users, newUser])}
             />
           </TabPanel>
+
           <TabPanel>
             <Button colorScheme="blue" onClick={onOpenSpaceModal} mb={4}>
               Cadastrar Nova Vaga

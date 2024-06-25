@@ -1,90 +1,85 @@
 import {
   Button,
   Center,
-  Checkbox,
+  FormControl,
+  FormLabel,
   Heading,
-  Image,
+  Input,
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { InputField } from './components/InputField'
-import { Formik, Form } from 'formik'
-import { AtSignIcon, LockIcon } from '@chakra-ui/icons'
+import { FormEvent, useState } from 'react'
+import { useAuth } from '../../hooks/useAuth'
 
 export const LoginPage = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+
+  const { login } = useAuth()
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault()
+
+    const errorMessage = await login(email, password)
+
+    if (errorMessage) {
+      setError(errorMessage)
+    }
+  }
+
   return (
     <Center h="100vh">
       <Stack
         boxShadow={'rgba(0, 0, 0, 0.24) 0px 3px 8px'}
         bg="whiteAlpha.900"
-        p="20"
+        p="16"
         rounded="md"
       >
-        <Image src="#" maxW="70px" mb="8" mx="auto" />
-        <Heading as="h1">Log in.</Heading>
+        <Heading as="h1">Parking Manager</Heading>
+
         <Text fontSize="lg" color="gray.600">
           Por favor, faça seu login com os dados inserido durante o registro.
         </Text>
 
-        <Formik
-          onSubmit={(
-            values: { email: string; password: string },
-            {
-              setSubmitting,
-            }: { setSubmitting: (isSubmitting: boolean) => void },
-          ) => {
-            setTimeout(() => {
-              console.log(values)
-              setSubmitting(false)
-            }, 1000)
-          }}
-          initialValues={{ email: '', password: '' }}
-        >
-          {({ isSubmitting }) => (
-            <Form>
-              <Stack my="4" spacing="6">
-                <InputField
-                  name="email"
-                  type="email"
-                  label="Email"
-                  leftAddon={<AtSignIcon color="blue.500" />}
-                />
-                <InputField
-                  name="password"
-                  type="password"
-                  label="Senha"
-                  leftAddon={<LockIcon color="blue.500" />}
-                />
-                <Checkbox colorScheme="blue"> Mantenha-me conectado</Checkbox>
-                <Button
-                  isLoading={isSubmitting}
-                  loadingText="Whispering to our servers"
-                  size="lg"
-                  colorScheme="blue"
-                  type="submit"
-                >
-                  Login
-                </Button>
-              </Stack>
-            </Form>
-          )}
-        </Formik>
+        <form onSubmit={handleSubmit}>
+          <Stack my="4" spacing="4">
+            <FormControl>
+              <FormLabel>Email</FormLabel>
 
-        <Stack justify="center" color="gray.600" spacing="3">
-          {/* <Text as="div" textAlign="center">
-            <span>Dont have an account?</span>
-            <Button colorScheme="blue" variant="link">
-              Sign up
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>Senha</FormLabel>
+
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </FormControl>
+
+            {error && (
+              <Text fontSize="sm" color="red">
+                {error}
+              </Text>
+            )}
+
+            <Button
+              loadingText="Carregando"
+              size="lg"
+              colorScheme="blue"
+              type="submit"
+            >
+              Login
             </Button>
-          </Text> */}
-          <Button
-            colorScheme="blue
-          "
-            variant="link"
-          >
-            Esqueceu seu senha?
-          </Button>
-        </Stack>
+          </Stack>
+        </form>
       </Stack>
     </Center>
   )
