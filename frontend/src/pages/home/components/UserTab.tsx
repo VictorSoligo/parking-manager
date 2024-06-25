@@ -5,10 +5,13 @@ import {
   Thead,
   Tr,
   Th,
+  Text,
   Tbody,
   useDisclosure,
+  Td,
 } from '@chakra-ui/react'
 import { NewUserModal } from './NewUserModal'
+import { useFetchUsers } from '../../../hooks/useFetchUsers'
 
 export const UserTab = () => {
   const {
@@ -16,6 +19,8 @@ export const UserTab = () => {
     onOpen: onOpenUserModal,
     onClose: onCloseUserModal,
   } = useDisclosure()
+
+  const { data: users, isLoading } = useFetchUsers()
 
   return (
     <>
@@ -40,7 +45,21 @@ export const UserTab = () => {
               <Th>Role</Th>
             </Tr>
           </Thead>
-          <Tbody></Tbody>
+
+          {isLoading && <Text>Carregando...</Text>}
+
+          {!isLoading && users && (
+            <Tbody>
+              {users.map((user) => (
+                <Tr key={user.id}>
+                  <Td>{user.id}</Td>
+                  <Td>{user.name}</Td>
+                  <Td>{user.email}</Td>
+                  <Td>{user.role === 'admin' ? 'Admin' : 'Gerente'}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          )}
         </Table>
       </Box>
 
