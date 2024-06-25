@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react'
+import { FC, FormEvent, useEffect, useState } from 'react'
 import {
   Box,
   Flex,
@@ -24,13 +24,15 @@ import {
 } from '@chakra-ui/react'
 import { useAuth } from '../../../hooks/useAuth'
 import { useEditParking } from '../../../hooks/useEditParking'
+import { useParking } from '../../../hooks/useParking'
 
-export const Header: React.FC = () => {
+export const Header: FC = () => {
   const [name, setName] = useState('')
   const [costPerHour, setCostPerHour] = useState('')
 
   const { logout, user } = useAuth()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { data: parking, isLoading: isLoadingParking } = useParking()
   const { mutateAsync } = useEditParking()
 
   async function handleSubmit(event: FormEvent) {
@@ -46,6 +48,15 @@ export const Header: React.FC = () => {
 
   const isManagerWithParking =
     !!user && user.role === 'manager' && !!user.parking_id
+
+  useEffect(() => {
+    if (parking) {
+      const cost = Number(parking.cost_per_hour_in_cents) / 100
+
+      setName(parking.name)
+      setCostPerHour(String(cost))
+    }
+  }, [parking])
 
   return (
     <Box px={8} boxShadow={'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px'} w="100%">
@@ -106,12 +117,15 @@ export const Header: React.FC = () => {
 
           <ModalContent>
             <ModalHeader>Editar Estacionamento</ModalHeader>
+
             <ModalCloseButton />
+
             <ModalBody>
               <FormControl id="name" mb={4}>
                 <FormLabel>Nome</FormLabel>
                 <Input
                   value={name}
+                  disabled={isLoadingParking}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Nome do estacionamento"
                 />
@@ -122,6 +136,7 @@ export const Header: React.FC = () => {
                 <Input
                   type="number"
                   placeholder="Valor por hora"
+                  disabled={isLoadingParking}
                   value={costPerHour}
                   onChange={(e) => setCostPerHour(e.target.value)}
                 />

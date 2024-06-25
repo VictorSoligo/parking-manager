@@ -1,4 +1,13 @@
 import { api } from '../lib/axios'
+import { Parking } from '../types/parking.types'
+
+type GetParkingResponse = Parking
+
+export async function getParking() {
+  const { data } = await api.get<GetParkingResponse>('/parkings/info')
+
+  return data
+}
 
 interface EditParkingRequest {
   name: string
