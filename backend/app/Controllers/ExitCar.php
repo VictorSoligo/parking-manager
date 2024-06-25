@@ -55,12 +55,14 @@ class ExitCar extends BaseController
         $endedAt = date("Y-m-d H:i:s");
 
         $parkingPeriodInSeconds = strtotime($endedAt) - strtotime($startedAt);
+        $parkingPeriodInHours = $parkingPeriodInSeconds / 3600;
+        $costInCents =  $parkingPeriodInHours * $booking['cost_per_hour_in_cents'];
 
         $parkingSpaceModel = new ParkingSpaceModel();
 
         $bookingData = [
             'ended_at' => $endedAt,
-            'cost_in_cents' => 0,
+            'cost_in_cents' => $costInCents,
             'is_finished' => 1,
         ];
 
