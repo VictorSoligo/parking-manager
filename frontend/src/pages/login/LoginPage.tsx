@@ -20,13 +20,7 @@ export const LoginPage = () => {
         p="20"
         rounded="md"
       >
-        <Image
-          src="https://icones.pro/wp-content/uploads/2022/07/icones-d-eclair-violet.png"
-          maxW="70px"
-          mb="8"
-          mx="auto"
-          alt="Icone de raio na cor roxa"
-        />
+        <Image src="#" maxW="70px" mb="8" mx="auto" />
         <Heading as="h1">Log in.</Heading>
         <Text fontSize="lg" color="gray.600">
           Por favor, faça seu login com os dados inserido durante o registro.
@@ -53,20 +47,20 @@ export const LoginPage = () => {
                   name="email"
                   type="email"
                   label="Email"
-                  leftAddon={<AtSignIcon color="purple.500" />}
+                  leftAddon={<AtSignIcon color="blue.500" />}
                 />
                 <InputField
                   name="password"
                   type="password"
                   label="Senha"
-                  leftAddon={<LockIcon color="purple.500" />}
+                  leftAddon={<LockIcon color="blue.500" />}
                 />
-                <Checkbox colorScheme="purple"> Mantenha-me conectado</Checkbox>
+                <Checkbox colorScheme="blue"> Mantenha-me conectado</Checkbox>
                 <Button
                   isLoading={isSubmitting}
                   loadingText="Whispering to our servers"
                   size="lg"
-                  colorScheme="purple"
+                  colorScheme="blue"
                   type="submit"
                 >
                   Login
@@ -79,11 +73,15 @@ export const LoginPage = () => {
         <Stack justify="center" color="gray.600" spacing="3">
           {/* <Text as="div" textAlign="center">
             <span>Dont have an account?</span>
-            <Button colorScheme="purple" variant="link">
+            <Button colorScheme="blue" variant="link">
               Sign up
             </Button>
           </Text> */}
-          <Button colorScheme="purple" variant="link">
+          <Button
+            colorScheme="blue
+          "
+            variant="link"
+          >
             Esqueceu seu senha?
           </Button>
         </Stack>

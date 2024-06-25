@@ -1,10 +1,33 @@
-import { Flex, Button, Box, useDisclosure, useToast } from '@chakra-ui/react'
+import { useState } from 'react'
+import {
+  Flex,
+  Button,
+  Box,
+  useDisclosure,
+  useToast,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+} from '@chakra-ui/react'
 import { Header } from './components/Header'
 import { VehicleTable } from './components/VehicleTable'
-import { useState } from 'react'
-import { Vehicle, VehicleList } from '../../types/vehicle.types'
 import { NewVehicleModal } from './components/NewVehicleModal'
 import { RemoveVehicleModal } from './components/RemoveVehicleModal'
+import { NewParkingModal } from './components/NewParkingModal'
+import { NewUserModal } from './components/NewUserModal'
+import { Vehicle, VehicleList } from '../../types/vehicle.types'
+import { Parking } from '../../types/parking.types'
+import { User } from '../../types/user.types'
+import { NewSpaceModal } from './components/NewSpaceModal'
+import { Space } from '../../types/space.types'
 
 export const HomePage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -13,6 +36,17 @@ export const HomePage = () => {
     onOpen: onRemoveOpen,
     onClose: onRemoveClose,
   } = useDisclosure()
+  const {
+    isOpen: isParkingModalOpen,
+    onOpen: onOpenParkingModal,
+    onClose: onCloseParkingModal,
+  } = useDisclosure()
+  const {
+    isOpen: isUserModalOpen,
+    onOpen: onOpenUserModal,
+    onClose: onCloseUserModal,
+  } = useDisclosure()
+
   const [vehicles, setVehicles] = useState<VehicleList>([
     {
       id: 1,
@@ -24,9 +58,11 @@ export const HomePage = () => {
       totalDue: 0,
     },
   ])
+  const [parkings, setParkings] = useState<Parking[]>([])
+  const [users, setUsers] = useState<User[]>([])
   const [vehicleToRemove, setVehicleToRemove] = useState<Vehicle | null>(null)
-  const toast = useToast()
 
+  const toast = useToast()
   const defaultHourlyRate = 5
 
   const handleRemoveVehicle = (id: number, exitTime: string) => {
@@ -36,7 +72,7 @@ export const HomePage = () => {
       const exitTimeDate = new Date(`1970-01-01T${exitTime}:00`)
       const hours = (exitTimeDate.getTime() - entryTime.getTime()) / 3600000
       vehicle.totalDue = hours * vehicle.hourlyRate
-      setVehicles(vehicles.filter((vehicle) => vehicle.id !== id))
+      setVehicles(vehicles.filter((v) => v.id !== id))
       toast({
         title: 'Veículo removido.',
         description: `O veículo foi removido com sucesso. Total a pagar: R$${vehicle.totalDue.toFixed(2)}`,
@@ -44,6 +80,7 @@ export const HomePage = () => {
         duration: 5000,
         isClosable: true,
       })
+      onRemoveClose()
     }
   }
 
@@ -52,42 +89,178 @@ export const HomePage = () => {
     onRemoveOpen()
   }
 
+  const {
+    isOpen: isSpaceModalOpen,
+    onOpen: onOpenSpaceModal,
+    onClose: onCloseSpaceModal,
+  } = useDisclosure()
+  const [spaces, setSpaces] = useState<Space[]>([])
+
+  const handleAddSpace = (newSpace: Space) => {
+    setSpaces([...spaces, newSpace])
+  }
+
   return (
     <Flex w="100%" h="100%" flexDirection="column" alignItems="center">
       <Header />
-      <Button
-        colorScheme="blue"
-        onClick={onOpen}
-        alignSelf="flex-start"
-        my={4}
-        ml="5%"
-      >
-        Novo Veículo
-      </Button>
-      <Box
-        w="90%"
-        p={4}
-        borderWidth={1}
-        borderRadius="lg"
-        boxShadow="lg"
-        overflow="hidden"
-      >
-        <VehicleTable vehicles={vehicles} onRemove={handleConfirmRemove} />
-      </Box>
-      <NewVehicleModal
-        isOpen={isOpen}
-        onClose={onClose}
-        onSave={(newVehicle: Vehicle) => setVehicles([...vehicles, newVehicle])}
-        hourlyRate={defaultHourlyRate}
-      />
-      {vehicleToRemove && (
-        <RemoveVehicleModal
-          isOpen={isRemoveOpen}
-          onClose={onRemoveClose}
-          vehicle={vehicleToRemove}
-          onConfirm={handleRemoveVehicle}
-        />
-      )}
+      <Tabs variant="enclosed" colorScheme="blue" my={4} w="95%">
+        <TabList>
+          <Tab>Estacionamento</Tab>
+          <Tab>Cadastrar Estacionamento</Tab>
+          <Tab>Cadastrar Usuário</Tab>
+          <Tab>Cadastrar Vaga</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <Button
+              colorScheme="blue"
+              onClick={onOpen}
+              alignSelf="flex-start"
+              mb={4}
+            >
+              Novo Veículo
+            </Button>
+            <Box
+              w="90%"
+              p={4}
+              borderWidth={1}
+              borderRadius="lg"
+              boxShadow="lg"
+              overflow="hidden"
+            >
+              <VehicleTable
+                vehicles={vehicles}
+                onRemove={handleConfirmRemove}
+              />
+            </Box>
+            <NewVehicleModal
+              isOpen={isOpen}
+              onClose={onClose}
+              onSave={(newVehicle: Vehicle) =>
+                setVehicles([...vehicles, newVehicle])
+              }
+              hourlyRate={defaultHourlyRate}
+            />
+            {vehicleToRemove && (
+              <RemoveVehicleModal
+                isOpen={isRemoveOpen}
+                onClose={onRemoveClose}
+                vehicle={vehicleToRemove}
+                onConfirm={handleRemoveVehicle}
+              />
+            )}
+          </TabPanel>
+          <TabPanel>
+            <Button colorScheme="blue" onClick={onOpenParkingModal} mb={4}>
+              Cadastrar Novo Estacionamento
+            </Button>
+            <Box
+              w="90%"
+              p={4}
+              borderWidth={1}
+              borderRadius="lg"
+              boxShadow="lg"
+              overflow="hidden"
+            >
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    <Th>Nome do Estacionamento</Th>
+                    <Th>Número de Vagas</Th>
+                    <Th>Valor por Hora</Th>
+                    <Th>Responsável</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {parkings.map((parking) => (
+                    <Tr key={parking.id}>
+                      <Td>{parking.name}</Td>
+                      <Td>{parking.totalSpots}</Td>
+                      <Td>R${parking.hourlyRate.toFixed(2)}</Td>
+                      <Td>{parking.manager}</Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </Box>
+            <NewParkingModal
+              isOpen={isParkingModalOpen}
+              onClose={onCloseParkingModal}
+              onSave={(newParking) => setParkings([...parkings, newParking])}
+            />
+          </TabPanel>
+          <TabPanel>
+            <Button colorScheme="blue" onClick={onOpenUserModal} mb={4}>
+              Cadastrar Novo Usuário
+            </Button>
+            <Box
+              w="90%"
+              p={4}
+              borderWidth={1}
+              borderRadius="lg"
+              boxShadow="lg"
+              overflow="hidden"
+            >
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    <Th>Nome</Th>
+                    <Th>Email</Th>
+                    <Th>Role</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {users.map((user) => (
+                    <Tr key={user.id}>
+                      <Td>{user.name}</Td>
+                      <Td>{user.email}</Td>
+                      <Td>{user.role}</Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </Box>
+            <NewUserModal
+              isOpen={isUserModalOpen}
+              onClose={onCloseUserModal}
+              onSave={(newUser) => setUsers([...users, newUser])}
+            />
+          </TabPanel>
+          <TabPanel>
+            <Button colorScheme="blue" onClick={onOpenSpaceModal} mb={4}>
+              Cadastrar Nova Vaga
+            </Button>
+            <Box
+              w="90%"
+              p={4}
+              borderWidth={1}
+              borderRadius="lg"
+              boxShadow="lg"
+              overflow="hidden"
+            >
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    <Th>Nome da Vaga</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {spaces.map((space) => (
+                    <Tr key={space.id}>
+                      <Td>{space.name}</Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </Box>
+            <NewSpaceModal
+              isOpen={isSpaceModalOpen}
+              onClose={onCloseSpaceModal}
+              onSave={handleAddSpace}
+            />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Flex>
   )
 }
