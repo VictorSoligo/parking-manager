@@ -17,6 +17,7 @@ export interface User {
 interface AuthContextData {
   user: User | null
   isAuthenticated: boolean
+  logout: () => void
   login: (email: string, password: string) => Promise<string | undefined>
 }
 
@@ -55,6 +56,15 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
   }
 
+  function logout() {
+    api.defaults.headers.common.authorization = undefined
+    localStorage.removeItem('token')
+
+    setUser(null)
+
+    navigate('/login', { replace: true })
+  }
+
   useEffect(() => {
     ;(async () => {
       const token = localStorage.getItem('token')
@@ -77,7 +87,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }, []) // eslint-disable-line
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   )

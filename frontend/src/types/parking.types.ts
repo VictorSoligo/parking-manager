@@ -1,7 +1,5 @@
 export interface Parking {
-  id: number
+  id: string
   name: string
-  totalSpots: number
-  hourlyRate: number
-  manager: string
+  cost_per_hour_in_cents: number
 }

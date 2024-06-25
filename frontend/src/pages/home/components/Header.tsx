@@ -22,12 +22,15 @@ import {
   FormLabel,
   useDisclosure,
 } from '@chakra-ui/react'
+import { useAuth } from '../../../hooks/useAuth'
 
 export const Header: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [name, setName] = useState('')
   const [hourlyRate, setHourlyRate] = useState('')
   const [totalSpots, setTotalSpots] = useState('')
+
+  const { logout } = useAuth()
 
   const handleSave = () => {
     onClose()
@@ -67,10 +70,13 @@ export const Header: React.FC = () => {
                 boxSize={3}
               />
             </MenuButton>
+
             <MenuList>
               <MenuItem onClick={onOpen}>Editar estacionamento</MenuItem>
+
               <MenuDivider />
-              <MenuItem>Sair</MenuItem>
+
+              <MenuItem onClick={logout}>Sair</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
