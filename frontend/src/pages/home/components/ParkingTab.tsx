@@ -5,10 +5,13 @@ import {
   Thead,
   Tr,
   Th,
+  Td,
+  Text,
   Tbody,
   useDisclosure,
 } from '@chakra-ui/react'
 import { NewParkingModal } from './NewParkingModal'
+import { useFetchParkings } from '../../../hooks/useFetchParkings'
 
 export const ParkingTab = () => {
   const {
@@ -16,6 +19,8 @@ export const ParkingTab = () => {
     onOpen: onOpenParkingModal,
     onClose: onCloseParkingModal,
   } = useDisclosure()
+
+  const { isLoading, data: parkings } = useFetchParkings()
 
   return (
     <>
@@ -40,7 +45,19 @@ export const ParkingTab = () => {
             </Tr>
           </Thead>
 
-          <Tbody></Tbody>
+          {isLoading && <Text>Carregando...</Text>}
+
+          {!isLoading && parkings && (
+            <Tbody>
+              {parkings.map((parking) => (
+                <Tr key={parking.id}>
+                  <Td>{parking.id}</Td>
+                  <Td>{parking.name}</Td>
+                  <Td>{Number(parking.cost_per_hour_in_cents) / 100}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          )}
         </Table>
       </Box>
 

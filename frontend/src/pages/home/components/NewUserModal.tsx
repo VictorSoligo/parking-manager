@@ -41,6 +41,10 @@ export const NewUserModal: React.FC<NewUserModalProps> = ({
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
 
+    if (!email || !name || !password) {
+      return
+    }
+
     await mutateAsync({
       email,
       name,
@@ -48,8 +52,7 @@ export const NewUserModal: React.FC<NewUserModalProps> = ({
       role,
     })
 
-    clearForm()
-    onClose()
+    handleCloseForm()
   }
 
   function handleCloseForm() {

@@ -5,10 +5,13 @@ import {
   Tbody,
   Th,
   Thead,
+  Text,
   Tr,
   useDisclosure,
+  Td,
 } from '@chakra-ui/react'
 import { NewSpaceModal } from './NewSpaceModal'
+import { useFetchSpaces } from '../../../hooks/useFetchSpaces'
 
 export const ParkingSpaceTab = () => {
   const {
@@ -16,6 +19,8 @@ export const ParkingSpaceTab = () => {
     onOpen: onOpenSpaceModal,
     onClose: onCloseSpaceModal,
   } = useDisclosure()
+
+  const { data: spaces, isLoading } = useFetchSpaces()
 
   return (
     <>
@@ -35,10 +40,22 @@ export const ParkingSpaceTab = () => {
           <Thead>
             <Tr>
               <Th>ID</Th>
-              <Th>Nome da Vaga</Th>
+              <Th>Identificação</Th>
             </Tr>
           </Thead>
-          <Tbody></Tbody>
+
+          {isLoading && <Text>Carregando...</Text>}
+
+          {!isLoading && spaces && (
+            <Tbody>
+              {spaces.map((space) => (
+                <Tr key={space.id}>
+                  <Td>{space.id}</Td>
+                  <Td>{space.identification}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          )}
         </Table>
       </Box>
 
