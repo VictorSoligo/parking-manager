@@ -25,6 +25,7 @@ class FetchActiveBookings extends BaseController
         $builder = $db->table('bookings');
         $builder->select('bookings.*, parking_spaces.identification AS space_identification');
         $builder->join('parking_spaces', 'bookings.space_id = parking_spaces.id');
+        $builder->where('bookings.parking_id', $user['parking_id']);
         $builder->where('bookings.is_finished = 0');
 
         $bookings = $builder->get()->getResultArray();

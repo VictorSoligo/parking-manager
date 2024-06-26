@@ -34,15 +34,10 @@ export async function editParking({
 
 interface CreateParkingRequest {
   name: string
-  costPerHourInCents: number
 }
 
-export async function createParking({
-  name,
-  costPerHourInCents,
-}: CreateParkingRequest) {
+export async function createParking({ name }: CreateParkingRequest) {
   await api.post('/parkings', {
     name,
-    cost_per_hour_in_cents: costPerHourInCents,
   })
 }

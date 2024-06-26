@@ -14,6 +14,7 @@ import {
   Select,
 } from '@chakra-ui/react'
 import { useCreateUser } from '../../../hooks/useCreateUser'
+import { useFetchParkings } from '../../../hooks/useFetchParkings'
 
 interface NewUserModalProps {
   isOpen: boolean
@@ -28,14 +29,17 @@ export const NewUserModal: React.FC<NewUserModalProps> = ({
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState('admin')
+  const [parkingId, setParkingId] = useState(-1)
 
   const { mutateAsync, isPending } = useCreateUser()
+  const { isLoading: isLoadingParkings, data: parkings } = useFetchParkings()
 
   function clearForm() {
     setName('')
     setEmail('')
     setPassword('')
     setRole('admin')
+    setParkingId(-1)
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -45,11 +49,16 @@ export const NewUserModal: React.FC<NewUserModalProps> = ({
       return
     }
 
+    if (role === 'manager' && parkingId === -1) {
+      return
+    }
+
     await mutateAsync({
       email,
       name,
       password,
       role,
+      parkingId,
     })
 
     handleCloseForm()
@@ -99,6 +108,28 @@ export const NewUserModal: React.FC<NewUserModalProps> = ({
               <Select value={role} onChange={(e) => setRole(e.target.value)}>
                 <option value="admin">Admin</option>
                 <option value="manager">Gerente</option>
+              </Select>
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Estacionamento</FormLabel>
+
+              <Select
+                disabled={isLoadingParkings || role === 'admin'}
+                value={parkingId}
+                onChange={(e) => setParkingId(Number(e.target.value))}
+              >
+                <option value={-1}>Selecione um estacionamento</option>
+
+                {parkings && (
+                  <>
+                    {parkings.map((parking) => (
+                      <option value={parking.id} key={parking.id}>
+                        {parking.name}
+                      </option>
+                    ))}
+                  </>
+                )}
               </Select>
             </FormControl>
           </ModalBody>

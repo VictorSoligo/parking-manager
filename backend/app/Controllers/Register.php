@@ -17,6 +17,7 @@ class Register extends BaseController
             'password' => ['rules' => 'required|min_length[8]|max_length[255]'],
             'name' => ['rules' => 'required|min_length[4]|max_length[255]'],
             'role' => ['rules' => 'required|in_list[admin,manager]'],
+            'parking_id' => ['rules' => 'integer|permit_empty']
         ];
         
         $isValidationSuccess = $this->validate($rules);
@@ -25,6 +26,17 @@ class Register extends BaseController
             $response = [
                 'errors' => $this->validator->getErrors(),
                 'message' => 'Invalid inputs'
+            ];
+
+            return $this->fail($response , 400);
+        }
+
+        
+        $parkingId = $this->request->getVar('parking_id');
+
+        if ($this->request->getVar('role') == 'manager' && !$parkingId) {
+            $response = [
+                'message' => 'O estacionamento é obrigatório'
             ];
 
             return $this->fail($response , 400);
@@ -48,6 +60,10 @@ class Register extends BaseController
             'name'     => $this->request->getVar('name'),
             'role'     => $this->request->getVar('role'),
         ];
+
+        if ($data['role'] == 'manager' && $parkingId) {
+            $data['parking_id'] = $parkingId;
+        }
 
         $userModel->save($data);
             

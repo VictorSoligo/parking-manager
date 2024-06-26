@@ -39,7 +39,7 @@ class ExitCar extends BaseController
 
         $bookingModel = new BookingModel();
 
-        $bookings = $bookingModel->where('car_plate', $this->request->getVar('car_plate'))->where('ended_at', null)->findAll();
+        $bookings = $bookingModel->where('car_plate', $this->request->getVar('car_plate'))->where('ended_at', null)->where('parking_id', $user['parking_id'])->findAll();
 
         if (count($bookings) != 1) {
             return $this->fail(['message' => 'Reserva não encontrada'] , 404);

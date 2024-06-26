@@ -14,6 +14,7 @@ interface CreateUserRequest {
   email: string
   password: string
   role: string
+  parkingId: number | null
 }
 
 export async function createUser({
@@ -21,11 +22,13 @@ export async function createUser({
   name,
   role,
   password,
+  parkingId,
 }: CreateUserRequest) {
   await api.post('/users', {
     email,
     name,
     role,
     password,
+    parking_id: parkingId,
   })
 }

@@ -28,6 +28,16 @@ class CreateParking extends BaseController
 
         $parkingModel = new ParkingModel();
 
+        $parkingWithSameName = $parkingModel->where('name', $this->request->getVar('name'))->first();
+
+        if ($parkingWithSameName) {
+            $response = [
+                'message' => 'Estacionamento já cadastrado'
+            ];
+
+            return $this->fail($response , 400);
+        }
+
         $data = [
             'name' => $this->request->getVar('name'),
             'cost_per_hour_in_cents' => 0,

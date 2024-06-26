@@ -37,6 +37,16 @@ class CreateParkingSpace extends BaseController
 
         $parkingSpaceModel = new ParkingSpaceModel();
 
+        $spaceWithSameIdentification = $parkingSpaceModel->where('identification', $this->request->getVar('identification'))->where('parking_id', $user['parking_id'])->first();
+
+        if ($spaceWithSameIdentification) {
+            $response = [
+                'message' => 'Vaga já cadastrada'
+            ];
+
+            return $this->fail($response , 400);
+        }
+
         $data = [
             'identification' => $this->request->getVar('identification'),
             'parking_id' => $user['parking_id'],

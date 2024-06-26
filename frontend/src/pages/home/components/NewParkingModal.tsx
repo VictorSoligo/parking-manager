@@ -24,25 +24,22 @@ export const NewParkingModal: FC<NewParkingModalProps> = ({
   onClose,
 }) => {
   const [name, setName] = useState('')
-  const [costPerHour, setCostPerHour] = useState('')
 
   const { mutateAsync, isPending } = useCreateParking()
 
   function clearForm() {
     setName('')
-    setCostPerHour('')
   }
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
 
-    if (!name || !costPerHour) {
+    if (!name) {
       return
     }
 
     await mutateAsync({
       name,
-      costPerHourInCents: Number(costPerHour) * 100,
     })
 
     handleCloseForm()
@@ -67,16 +64,6 @@ export const NewParkingModal: FC<NewParkingModalProps> = ({
             <FormControl>
               <FormLabel>Nome do Estacionamento</FormLabel>
               <Input value={name} onChange={(e) => setName(e.target.value)} />
-            </FormControl>
-
-            <FormControl mt={4}>
-              <FormLabel>Valor por Hora</FormLabel>
-
-              <Input
-                type="number"
-                value={costPerHour}
-                onChange={(e) => setCostPerHour(e.target.value)}
-              />
             </FormControl>
           </ModalBody>
 
