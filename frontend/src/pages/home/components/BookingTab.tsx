@@ -5,10 +5,16 @@ import {
   Tbody,
   Th,
   Thead,
+  Td,
+  Text,
   Tr,
   useDisclosure,
 } from '@chakra-ui/react'
 import { NewBookingModal } from './NewBookingModal'
+import { useFetchActiveBookings } from '../../../hooks/useFetchActiveBookings'
+import { dateFormatter } from '../../../utils/dateFormatter'
+import { costFormatter } from '../../../utils/costFormatter'
+import { RemoveVehicleModal } from './RemoveVehicleModal'
 
 export const BookingTab = () => {
   const {
@@ -17,11 +23,25 @@ export const BookingTab = () => {
     onClose: onCloseBookingModal,
   } = useDisclosure()
 
+  const {
+    isOpen: isRemoveModalOpen,
+    onOpen: onOpenRemoveModal,
+    onClose: onCloseRemoveModal,
+  } = useDisclosure()
+
+  const { data: bookings, isLoading } = useFetchActiveBookings()
+
   return (
     <>
-      <Button colorScheme="blue" onClick={onOpenBookingModal} mb={4}>
-        Nova reserva
-      </Button>
+      <Box display="flex" flexDirection="row" gap="4" mb={4}>
+        <Button colorScheme="blue" onClick={onOpenBookingModal}>
+          Nova reserva
+        </Button>
+
+        <Button colorScheme="blue" onClick={onOpenRemoveModal}>
+          Registrar saída
+        </Button>
+      </Box>
 
       <Box
         w="100%"
@@ -41,13 +61,36 @@ export const BookingTab = () => {
             </Tr>
           </Thead>
 
-          <Tbody></Tbody>
+          {isLoading && <Text>Carregando...</Text>}
+
+          {!isLoading && bookings && (
+            <Tbody>
+              {bookings.map((booking) => (
+                <Tr key={booking.id}>
+                  <Td>{booking.car_plate}</Td>
+                  <Td>{booking.space_identification}</Td>
+                  <Td>
+                    {dateFormatter({
+                      date: booking.started_at,
+                      formatInLocalTimezone: true,
+                    })}
+                  </Td>
+                  <Td>{costFormatter(booking.cost_per_hour_in_cents)}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          )}
         </Table>
       </Box>
 
       <NewBookingModal
         isOpen={isBookingModalOpen}
         onClose={onCloseBookingModal}
+      />
+
+      <RemoveVehicleModal
+        isOpen={isRemoveModalOpen}
+        onClose={onCloseRemoveModal}
       />
     </>
   )

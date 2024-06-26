@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, FormEvent, useState } from 'react'
 import {
   Modal,
   ModalOverlay,
@@ -11,7 +11,10 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Select,
 } from '@chakra-ui/react'
+import { useFetchAvailableSpaces } from '../../../hooks/useFetchAvailableSpaces'
+import { useCreateBooking } from '../../../hooks/useCreateBooking'
 
 interface NewBookingModalProps {
   isOpen: boolean
@@ -22,40 +25,92 @@ export const NewBookingModal: FC<NewBookingModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [name, setName] = useState('')
+  const [carPlate, setCarPlate] = useState('')
+  const [spaceId, setSpaceId] = useState(-1)
 
-  const handleSave = () => {
+  const { isLoading: isLoadingSpaces, data: spaces } = useFetchAvailableSpaces()
+
+  const { isPending, mutateAsync } = useCreateBooking()
+
+  function clearForm() {
+    setCarPlate('')
+    setSpaceId(-1)
+  }
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault()
+
+    if (!carPlate || spaceId === -1) {
+      return
+    }
+
+    await mutateAsync({
+      carPlate,
+      spaceId,
+    })
+
+    handleCloseForm()
+  }
+
+  function handleCloseForm() {
+    clearForm()
     onClose()
   }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
+      <form onSubmit={handleSubmit}>
+        <ModalOverlay />
 
-      <ModalContent>
-        <ModalHeader>Nova reserva</ModalHeader>
+        <ModalContent>
+          <ModalHeader>Nova reserva</ModalHeader>
 
-        <ModalCloseButton />
+          <ModalCloseButton />
 
-        <ModalBody>
-          <FormControl>
-            <FormLabel>Nome da Vaga</FormLabel>
-            <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Digite o nome da vaga"
-            />
-          </FormControl>
-        </ModalBody>
+          <ModalBody>
+            <FormControl>
+              <FormLabel>Placa do carro</FormLabel>
 
-        <ModalFooter>
-          <Button colorScheme="blue" onClick={handleSave}>
-            Salvar
-          </Button>
+              <Input
+                value={carPlate}
+                onChange={(e) => setCarPlate(e.target.value)}
+              />
+            </FormControl>
 
-          <Button onClick={onClose}>Cancelar</Button>
-        </ModalFooter>
-      </ModalContent>
+            <FormControl mt={4}>
+              <FormLabel>Vaga</FormLabel>
+
+              <Select
+                value={spaceId}
+                disabled={isLoadingSpaces}
+                onChange={(e) => setSpaceId(Number(e.target.value))}
+              >
+                <option value={-1}>Selecione uma vaga</option>
+
+                {spaces && (
+                  <>
+                    {spaces.map((space) => (
+                      <option key={space.id} value={space.id}>
+                        {space.identification}
+                      </option>
+                    ))}
+                  </>
+                )}
+              </Select>
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter display="flex" gap="4">
+            <Button onClick={handleCloseForm} type="button">
+              Cancelar
+            </Button>
+
+            <Button colorScheme="blue" type="submit" disabled={isPending}>
+              Salvar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </form>
     </Modal>
   )
 }

@@ -9,6 +9,16 @@ export async function fetchSpaces() {
   return data
 }
 
+type FetchAvailableSpacesResponse = Space[]
+
+export async function fetchAvailableSpaces() {
+  const { data } = await api.get<FetchAvailableSpacesResponse>(
+    '/parkings/spaces/availables',
+  )
+
+  return data
+}
+
 interface CreateSpaceRequest {
   identification: string
 }

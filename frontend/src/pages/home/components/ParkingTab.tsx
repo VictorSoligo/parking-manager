@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { NewParkingModal } from './NewParkingModal'
 import { useFetchParkings } from '../../../hooks/useFetchParkings'
+import { costFormatter } from '../../../utils/costFormatter'
 
 export const ParkingTab = () => {
   const {
@@ -53,7 +54,7 @@ export const ParkingTab = () => {
                 <Tr key={parking.id}>
                   <Td>{parking.id}</Td>
                   <Td>{parking.name}</Td>
-                  <Td>{Number(parking.cost_per_hour_in_cents) / 100}</Td>
+                  <Td>{costFormatter(parking.cost_per_hour_in_cents)}</Td>
                 </Tr>
               ))}
             </Tbody>

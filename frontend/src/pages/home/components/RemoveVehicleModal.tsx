@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { FC, FormEvent, useState } from 'react'
 import {
   Modal,
   ModalOverlay,
@@ -10,67 +10,95 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Input,
+  Select,
 } from '@chakra-ui/react'
-import { Vehicle } from '../../../types/vehicle.types'
-import { mask } from 'remask'
+import { useFetchActiveBookings } from '../../../hooks/useFetchActiveBookings'
+import { useFinishBooking } from '../../../hooks/useFinishBooking'
 
 interface RemoveVehicleModalProps {
   isOpen: boolean
   onClose: () => void
-  vehicle: Vehicle
-  onConfirm: (id: number, exitTime: string) => void
 }
 
-export const RemoveVehicleModal: React.FC<RemoveVehicleModalProps> = ({
+export const RemoveVehicleModal: FC<RemoveVehicleModalProps> = ({
   isOpen,
   onClose,
-  vehicle,
-  onConfirm,
 }) => {
-  const [exitTime, setExitTime] = useState('')
+  const [carPlate, setCarPlate] = useState('')
 
-  const handleExitTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setExitTime(mask(e.target.value, ['99:99']))
+  const { data: bookings, isLoading: isLoadingActiveBookings } =
+    useFetchActiveBookings()
+
+  const { isPending, mutateAsync } = useFinishBooking()
+
+  function clearForm() {
+    setCarPlate('')
   }
 
-  const handleConfirm = () => {
-    onConfirm(vehicle.id, exitTime)
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault()
+
+    if (!carPlate) {
+      return
+    }
+
+    await mutateAsync({
+      carPlate,
+    })
+
+    handleCloseForm()
+  }
+
+  function handleCloseForm() {
+    clearForm()
     onClose()
   }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Confirmar Saída</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <FormControl>
-            <FormLabel>Horário de Saída</FormLabel>
-            <Input value={exitTime} onChange={handleExitTimeChange} />
-          </FormControl>
-          <FormControl mt={4}>
-            <FormLabel>Total a Pagar (R$)</FormLabel>
-            <Input
-              value={(
-                vehicle.hourlyRate *
-                ((new Date(`1970-01-01T${exitTime}:00`).getTime() -
-                  new Date(`1970-01-01T${vehicle.entryTime}:00`).getTime()) /
-                  3600000)
-              ).toFixed(2)}
-              isReadOnly
-            />
-          </FormControl>
-        </ModalBody>
+      <form onSubmit={handleSubmit}>
+        <ModalOverlay />
 
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleConfirm}>
-            Confirmar
-          </Button>
-          <Button onClick={onClose}>Cancelar</Button>
-        </ModalFooter>
-      </ModalContent>
+        <ModalContent>
+          <ModalHeader>Confirmar Saída</ModalHeader>
+
+          <ModalCloseButton />
+
+          <ModalBody>
+            <FormControl mt={4}>
+              <FormLabel>Placa do carro</FormLabel>
+
+              <Select
+                value={carPlate}
+                disabled={isLoadingActiveBookings}
+                onChange={(e) => setCarPlate(e.target.value)}
+              >
+                <option value={''}>Selecione a placa do veículo</option>
+
+                {bookings && (
+                  <>
+                    {bookings.map((booking) => (
+                      <option key={booking.id} value={booking.car_plate}>
+                        {booking.car_plate}
+                      </option>
+                    ))}
+                  </>
+                )}
+              </Select>
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter display="flex" gap="4">
+            <Button onClick={handleCloseForm} type="button">
+              Cancelar
+            </Button>
+
+            <Button colorScheme="blue" type="submit" disabled={isPending}>
+              Confirmar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </form>
     </Modal>
   )
 }
