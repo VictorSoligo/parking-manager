@@ -5,10 +5,15 @@ import {
   Tbody,
   Th,
   Thead,
+  Td,
+  Text,
   Tr,
   useDisclosure,
 } from '@chakra-ui/react'
 import { NewBookingModal } from './NewBookingModal'
+import { useFetchActiveBookings } from '../../../hooks/useFetchActiveBookings'
+import { dateFormatter } from '../../../utils/dateFormatter'
+import { costFormatter } from '../../../utils/costFormatter'
 
 export const BookingTab = () => {
   const {
@@ -16,6 +21,8 @@ export const BookingTab = () => {
     onOpen: onOpenBookingModal,
     onClose: onCloseBookingModal,
   } = useDisclosure()
+
+  const { data: bookings, isLoading } = useFetchActiveBookings()
 
   return (
     <>
@@ -41,7 +48,25 @@ export const BookingTab = () => {
             </Tr>
           </Thead>
 
-          <Tbody></Tbody>
+          {isLoading && <Text>Carregando...</Text>}
+
+          {!isLoading && bookings && (
+            <Tbody>
+              {bookings.map((booking) => (
+                <Tr key={booking.id}>
+                  <Td>{booking.car_plate}</Td>
+                  <Td>{booking.space_identification}</Td>
+                  <Td>
+                    {dateFormatter({
+                      date: booking.started_at,
+                      formatInLocalTimezone: true,
+                    })}
+                  </Td>
+                  <Td>{costFormatter(booking.cost_per_hour_in_cents)}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          )}
         </Table>
       </Box>
 

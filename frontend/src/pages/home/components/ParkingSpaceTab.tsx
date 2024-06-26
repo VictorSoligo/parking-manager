@@ -41,6 +41,7 @@ export const ParkingSpaceTab = () => {
             <Tr>
               <Th>ID</Th>
               <Th>Identificação</Th>
+              <Th>Status</Th>
             </Tr>
           </Thead>
 
@@ -52,6 +53,7 @@ export const ParkingSpaceTab = () => {
                 <Tr key={space.id}>
                   <Td>{space.id}</Td>
                   <Td>{space.identification}</Td>
+                  <Td>{space.is_filled === '1' ? 'Ocupada' : 'Livre'}</Td>
                 </Tr>
               ))}
             </Tbody>
