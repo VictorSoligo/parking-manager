@@ -24,82 +24,73 @@ export const NewParkingModal: FC<NewParkingModalProps> = ({
   onClose,
 }) => {
   const [name, setName] = useState('')
-  const [totalSpots, setTotalSpots] = useState('')
-  const [hourlyRate, setHourlyRate] = useState('')
-  const [manager, setManager] = useState('')
+  const [costPerHour, setCostPerHour] = useState('')
 
-  const { mutateAsync, status } = useCreateParking()
+  const { mutateAsync, isPending } = useCreateParking()
 
-  const isLoading = status === 'pending'
+  function clearForm() {
+    setName('')
+    setCostPerHour('')
+  }
 
-  const handleSave = async (event: FormEvent) => {
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault()
+
+    if (!name || !costPerHour) {
+      return
+    }
 
     await mutateAsync({
       name,
-      totalSpots: parseInt(totalSpots),
-      hourlyRate: parseFloat(hourlyRate),
-      manager,
+      costPerHourInCents: Number(costPerHour) * 100,
     })
 
+    handleCloseForm()
+  }
+
+  function handleCloseForm() {
+    clearForm()
     onClose()
   }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
+      <form onSubmit={handleSubmit}>
+        <ModalOverlay />
 
-      <ModalContent>
-        <ModalHeader>Cadastrar Estacionamento</ModalHeader>
+        <ModalContent>
+          <ModalHeader>Cadastrar estacionamento</ModalHeader>
 
-        <ModalCloseButton />
+          <ModalCloseButton />
 
-        <ModalBody>
-          <FormControl>
-            <FormLabel>Nome do Estacionamento</FormLabel>
-            <Input value={name} onChange={(e) => setName(e.target.value)} />
-          </FormControl>
+          <ModalBody>
+            <FormControl>
+              <FormLabel>Nome do Estacionamento</FormLabel>
+              <Input value={name} onChange={(e) => setName(e.target.value)} />
+            </FormControl>
 
-          <FormControl mt={4}>
-            <FormLabel>Número de Vagas</FormLabel>
-            <Input
-              type="number"
-              value={totalSpots}
-              onChange={(e) => setTotalSpots(e.target.value)}
-            />
-          </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>Valor por Hora</FormLabel>
 
-          <FormControl mt={4}>
-            <FormLabel>Valor por Hora</FormLabel>
+              <Input
+                type="number"
+                value={costPerHour}
+                onChange={(e) => setCostPerHour(e.target.value)}
+              />
+            </FormControl>
+          </ModalBody>
 
-            <Input
-              type="number"
-              value={hourlyRate}
-              onChange={(e) => setHourlyRate(e.target.value)}
-            />
-          </FormControl>
+          <ModalFooter display="flex" gap="4">
+            <Button onClick={handleCloseForm} type="button">
+              Cancelar
+            </Button>
 
-          <FormControl mt={4}>
-            <FormLabel>Responsável</FormLabel>
-            <Input
-              value={manager}
-              onChange={(e) => setManager(e.target.value)}
-            />
-          </FormControl>
-        </ModalBody>
-
-        <ModalFooter>
-          <Button
-            colorScheme="blue"
-            mr={3}
-            onClick={handleSave}
-            isLoading={isLoading}
-          >
-            Salvar
-          </Button>
-          <Button onClick={onClose}>Cancelar</Button>
-        </ModalFooter>
-      </ModalContent>
+            <Button colorScheme="blue" isLoading={isPending} type="submit">
+              Salvar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </form>
     </Modal>
   )
 }

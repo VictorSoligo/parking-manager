@@ -38,6 +38,10 @@ export const Header: FC = () => {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
 
+    if (!name || !costPerHour) {
+      return
+    }
+
     await mutateAsync({
       costPerHourInCents: Number(costPerHour) * 100,
       name,
@@ -143,12 +147,12 @@ export const Header: FC = () => {
               </FormControl>
             </ModalBody>
 
-            <ModalFooter>
+            <ModalFooter display="flex" gap="4">
               <Button variant="ghost" onClick={onClose} type="button">
                 Cancelar
               </Button>
 
-              <Button colorScheme="blue" mr={3} type="submit">
+              <Button colorScheme="blue" type="submit">
                 Salvar
               </Button>
             </ModalFooter>

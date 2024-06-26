@@ -1,6 +1,14 @@
 import { api } from '../lib/axios'
 import { Parking } from '../types/parking.types'
 
+type FetchParkingsResponse = Parking[]
+
+export async function fetchParkings() {
+  const { data } = await api.get<FetchParkingsResponse>('/parkings')
+
+  return data
+}
+
 type GetParkingResponse = Parking
 
 export async function getParking() {
@@ -26,21 +34,15 @@ export async function editParking({
 
 interface CreateParkingRequest {
   name: string
-  totalSpots: number
-  hourlyRate: number
-  manager: string
+  costPerHourInCents: number
 }
 
 export async function createParking({
   name,
-  totalSpots,
-  hourlyRate,
-  manager,
+  costPerHourInCents,
 }: CreateParkingRequest) {
   await api.post('/parkings', {
     name,
-    total_spots: totalSpots,
-    hourly_rate: hourlyRate,
-    manager,
+    cost_per_hour_in_cents: costPerHourInCents,
   })
 }

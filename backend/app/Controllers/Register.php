@@ -32,9 +32,9 @@ class Register extends BaseController
   
         $userModel = new UserModel();
 
-        $userWithSameEmail = $userModel->where('email', $this->request->getVar('email'));
+        $userWithSameEmail = $userModel->where('email', $this->request->getVar('email'))->first();
 
-        if (isset($userWithSameEmail)) {
+        if ($userWithSameEmail) {
             $response = [
                 'message' => 'Email já cadastrado'
             ];

@@ -20,12 +20,14 @@ export function useCreateParking() {
         isClosable: true,
       })
     },
-    onError: (error: AxiosError<{ message: string }>) => {
+    onError: (error: AxiosError<{ messages: { message: string } }>) => {
+      const errorMessage = error.response?.data.messages.message
+
       toast({
         title: 'Erro ao criar estacionamento',
-        description: error.response?.data.message || 'Erro desconhecido',
+        description: errorMessage ?? 'Erro desconhecido',
         status: 'error',
-        duration: 5000,
+        duration: 1000 * 5, // 5 seconds
         isClosable: true,
       })
     },

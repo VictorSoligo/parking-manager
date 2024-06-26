@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import {
   Modal,
   ModalOverlay,
@@ -23,39 +23,62 @@ export const NewSpaceModal: React.FC<NewSpaceModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [name, setName] = useState('')
-  const { mutateAsync, status } = useCreateSpace()
+  const [identification, setIdentification] = useState('')
+  const { mutateAsync, isPending } = useCreateSpace()
 
-  const isLoading = status === 'pending'
+  function clearForm() {
+    setIdentification('')
+  }
 
-  const handleSave = async () => {
-    await mutateAsync(name)
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault()
+
+    if (!identification) {
+      return
+    }
+
+    await mutateAsync({ identification })
+
+    handleCloseForm()
+  }
+
+  function handleCloseForm() {
+    clearForm()
     onClose()
   }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Cadastrar Nova Vaga</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <FormControl>
-            <FormLabel>Nome da Vaga</FormLabel>
-            <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Digite o nome da vaga"
-            />
-          </FormControl>
-        </ModalBody>
-        <ModalFooter>
-          <Button colorScheme="blue" onClick={handleSave} isLoading={isLoading}>
-            Salvar
-          </Button>
-          <Button onClick={onClose}>Cancelar</Button>
-        </ModalFooter>
-      </ModalContent>
+      <form onSubmit={handleSubmit}>
+        <ModalOverlay />
+
+        <ModalContent>
+          <ModalHeader>Cadastrar nova vaga</ModalHeader>
+
+          <ModalCloseButton />
+
+          <ModalBody>
+            <FormControl>
+              <FormLabel>Nome da Vaga</FormLabel>
+              <Input
+                value={identification}
+                onChange={(e) => setIdentification(e.target.value)}
+                placeholder="Identificação da vaga"
+              />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter display="flex" gap="4">
+            <Button onClick={handleCloseForm} type="button">
+              Cancelar
+            </Button>
+
+            <Button colorScheme="blue" isLoading={isPending} type="submit">
+              Salvar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </form>
     </Modal>
   )
 }
