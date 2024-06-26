@@ -1,4 +1,4 @@
-import { useState, FC } from 'react'
+import { useState, FC, FormEvent } from 'react'
 import {
   Modal,
   ModalOverlay,
@@ -12,6 +12,7 @@ import {
   FormLabel,
   Input,
 } from '@chakra-ui/react'
+import { useCreateParking } from '../../../hooks/useCreateParking'
 
 interface NewParkingModalProps {
   isOpen: boolean
@@ -27,7 +28,20 @@ export const NewParkingModal: FC<NewParkingModalProps> = ({
   const [hourlyRate, setHourlyRate] = useState('')
   const [manager, setManager] = useState('')
 
-  const handleSave = () => {
+  const { mutateAsync, status } = useCreateParking()
+
+  const isLoading = status === 'pending'
+
+  const handleSave = async (event: FormEvent) => {
+    event.preventDefault()
+
+    await mutateAsync({
+      name,
+      totalSpots: parseInt(totalSpots),
+      hourlyRate: parseFloat(hourlyRate),
+      manager,
+    })
+
     onClose()
   }
 
@@ -75,7 +89,12 @@ export const NewParkingModal: FC<NewParkingModalProps> = ({
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleSave}>
+          <Button
+            colorScheme="blue"
+            mr={3}
+            onClick={handleSave}
+            isLoading={isLoading}
+          >
             Salvar
           </Button>
           <Button onClick={onClose}>Cancelar</Button>

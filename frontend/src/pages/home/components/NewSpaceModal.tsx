@@ -12,6 +12,7 @@ import {
   FormLabel,
   Input,
 } from '@chakra-ui/react'
+import { useCreateSpace } from '../../../hooks/useCreateSpace'
 
 interface NewSpaceModalProps {
   isOpen: boolean
@@ -23,8 +24,12 @@ export const NewSpaceModal: React.FC<NewSpaceModalProps> = ({
   onClose,
 }) => {
   const [name, setName] = useState('')
+  const { mutateAsync, status } = useCreateSpace()
 
-  const handleSave = () => {
+  const isLoading = status === 'pending'
+
+  const handleSave = async () => {
+    await mutateAsync(name)
     onClose()
   }
 
@@ -45,7 +50,7 @@ export const NewSpaceModal: React.FC<NewSpaceModalProps> = ({
           </FormControl>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" onClick={handleSave}>
+          <Button colorScheme="blue" onClick={handleSave} isLoading={isLoading}>
             Salvar
           </Button>
           <Button onClick={onClose}>Cancelar</Button>
