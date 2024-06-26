@@ -14,6 +14,7 @@ import { NewBookingModal } from './NewBookingModal'
 import { useFetchActiveBookings } from '../../../hooks/useFetchActiveBookings'
 import { dateFormatter } from '../../../utils/dateFormatter'
 import { costFormatter } from '../../../utils/costFormatter'
+import { RemoveVehicleModal } from './RemoveVehicleModal'
 
 export const BookingTab = () => {
   const {
@@ -22,13 +23,25 @@ export const BookingTab = () => {
     onClose: onCloseBookingModal,
   } = useDisclosure()
 
+  const {
+    isOpen: isRemoveModalOpen,
+    onOpen: onOpenRemoveModal,
+    onClose: onCloseRemoveModal,
+  } = useDisclosure()
+
   const { data: bookings, isLoading } = useFetchActiveBookings()
 
   return (
     <>
-      <Button colorScheme="blue" onClick={onOpenBookingModal} mb={4}>
-        Nova reserva
-      </Button>
+      <Box display="flex" flexDirection="row" gap="4" mb={4}>
+        <Button colorScheme="blue" onClick={onOpenBookingModal}>
+          Nova reserva
+        </Button>
+
+        <Button colorScheme="blue" onClick={onOpenRemoveModal}>
+          Registrar saída
+        </Button>
+      </Box>
 
       <Box
         w="100%"
@@ -73,6 +86,11 @@ export const BookingTab = () => {
       <NewBookingModal
         isOpen={isBookingModalOpen}
         onClose={onCloseBookingModal}
+      />
+
+      <RemoveVehicleModal
+        isOpen={isRemoveModalOpen}
+        onClose={onCloseRemoveModal}
       />
     </>
   )

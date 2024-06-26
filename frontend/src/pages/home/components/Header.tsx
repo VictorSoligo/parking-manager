@@ -43,7 +43,7 @@ export const Header: FC = () => {
     }
 
     await mutateAsync({
-      costPerHourInCents: Number(costPerHour) * 100,
+      costPerHourInCents: Number(Number(costPerHour).toFixed(2)) * 100,
       name,
     })
 
