@@ -63,84 +63,41 @@ $ sudo groupadd docker
 $ sudo gpasswd -a $USER docker
 $ docker run hello-world # Se esse comando funcionar corretamente sem 'sudo', parabéns! Está tudo devidamente configurado. 
 ```
-# Configuração do Docker
-## Dockerfile
-O Dockerfile define a imagem do Docker para o ambiente PHP. Aqui está um exemplo de Dockerfile
-```bash
-FROM php:8.3.7-cli
-RUN apt-get -y update \
-  && apt-get install -y libicu-dev libzip-dev libxml2-dev zip vim iputils-ping nodejs npm tmux
-RUN docker-php-ext-install intl mysqli pdo_mysql soap zip 
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
-```
-## Dockercompose.yml
-Crie um arquivo chamado docker-compose.yml na raiz do projeto com o seguinte conteúdo:
-```bash
-services:
-  app:
-    build: .
-    container_name: app
-    init: true
-    volumes:
-      - ../:/app
-    command: sleep infinity
-    ports:
-      - '3000:3000'
-      - '8080:8080'
-    depends_on:
-      - mysql
-  mysql:
-    image: mysql:8.3.0
-    container_name: mysql
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=123456
-      - MYSQL_DATABASE=parkingmanager
-    ports:
-      - '3306:3306'
-    expose:
-      - '3306'
-    volumes:
-      - database:/var/lib/mysql
-      
-volumes:
-  database:
-```
 
 # Executar o Ambiente de Desenvolvimento
 
-## Pré-requisitos
+## Requisitos
+
 Certifique-se de que você tenha os seguintes softwares instalados:
   - Docker (https://www.docker.com/)
   - Docker Compose
-  - Node.js (versão 14x ou superior, https://nodejs.org/)
-  - npm (geralmente vem com o Noje.js, https://www.npmjs.com/)
+  - Visual Studio Code
 
 ## Passos para Intalação
+
 ### Clone o repositório
 ``` bash
 git clone https://github.com/VictorSoligo/parking-manager
 cd parking-manager
 ```
 
-### Instale as dependências do frontend
-Navegue até o diretório do frontend e instale as dependências usando npm:
-``` bash
-cd frontend
-npm install
-```
-
 ## Como Rodar o Projeto
-### Inicie o Docker
-Certifique-se de que o Docker está em execução em sua máquina.
 
-### Suba os containers com Docker Compose
-Na Raiz do projeto, execute o seguinte comando para iniciar os containers do Docker:
-``` bash
-docker-compose up --build
-```
-Isso iniciará os serviços do PHP(CodeIgniter), MySQL e o frontend do react.
+### Inicie o Docker
+- Certifique-se de que o Docker está em execução em sua máquina.
+- Certifique-se que nenhum container esteja rodando pelo comando "docker ps". 
+- Se um ou mais containers estiverem rodando, execute o comando "docker stop $(docker ps -a -q)" para parar todas as execuções.
+
+### Visual Studio Code
+- Abra a pasta root do projeto no editor.
+- Certifique-se de que a extensão "Dev Containers" fornecida pela Microsoft esteja instalada no editor.
+- Abra a paleta de comandos acessada pelo atalho "Ctrl shift P".
+- Execute o comando "Dev Containers: Rebuild Without Cache and Reopen in Container".
+- Aguarde as instalações serem concluídas.
+- Em um novo termial execute o comando "chmod +x dev.sh" para dar permissão de execução para o script "dev.sh".
+- Execute o script "dev.sh" pelo comando "./dev.sh".
 
 ### Acesse a aplicação
-  - O backend (CodeIgniter) estará disponivel em: 'http://localhost:8000'
-  - O frontend(React) estará disponível em: 'http://localhost:3000'
+  - O backend (CodeIgniter) estará disponivel em: 'http://localhost:8000'.
+  - O frontend(React) estará disponível em um navegador na url: 'http://localhost:3000'.
+  - Para logar na aplicação utilize o email "admin@admin.com" e a senha "12345678".
