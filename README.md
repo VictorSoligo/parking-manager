@@ -98,6 +98,6 @@ cd parking-manager
 - Execute o script "dev.sh" pelo comando "./dev.sh".
 
 ### Acesse a aplicação
-  - O backend (CodeIgniter) estará disponivel em: 'http://localhost:8000'.
+  - O backend (CodeIgniter) estará disponivel em: 'http://localhost:8080'.
   - O frontend(React) estará disponível em um navegador na url: 'http://localhost:3000'.
   - Para logar na aplicação utilize o email "admin@admin.com" e a senha "12345678".
