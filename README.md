@@ -1,4 +1,10 @@
-# Gerenciamento de Estacionamento 
+# Gerenciamento de Estacionamento
+Acadêmicos: Gabriel Marafon, Victor Soligo e Wesllen da Cruz.
+
+# Equipes
+- Frontend: Victor e Wesllen
+- Backend: Victor e Gabriel
+- Documentação: Todos
 
 ## Framework
 <p align="center">
