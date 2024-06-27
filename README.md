@@ -56,7 +56,7 @@ $ curl https://get.docker.com/ | sh
 Depois de instalado, talvez seja necessário permitir que o Docker possa executar seus serviços, tradicionalmente através do *systemd*. 
   * [O que é o systemd?](https://learn.microsoft.com/pt-br/windows/wsl/systemd#what-is-systemd-in-linux)
   * [Habilitar systemd](https://learn.microsoft.com/pt-br/windows/wsl/systemd#how-to-enable-systemd)
-O Docker inicialmente precisa de privilégio de super usuário, nesse sentido, siga as instruções para habilitar acesso ao seu usuario (https://askubuntu.com/a/477554).
+O Docker inicialmente precisa de privilégio de *super usuário*, nesse sentido, siga as instruções para habilitar acesso ao seu usuario (https://askubuntu.com/a/477554).
 
 ```bash
 $ sudo groupadd docker
@@ -107,6 +107,7 @@ volumes:
   database:
 ```
 
+<<<<<<< HEAD
 # Executar o Ambiente de Desenvolvimento
 
 ## Pré-requisitos
@@ -144,3 +145,5 @@ Isso iniciará os serviços do PHP(CodeIgniter), MySQL e o frontend do react.
 ### Acesse a aplicação
   - O backend (CodeIgniter) estará disponivel em: 'http://localhost:8000'
   - O frontend(React) estará disponível em: 'http://localhost:3000'
+=======
+>>>>>>> dbf408ec6c22bb8b1e049a101069b8c3dbbb1f3b
