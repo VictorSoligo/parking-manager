@@ -14,5 +14,5 @@ export function dateFormatter({
   format = 'DD/MM/YYYY',
   formatInLocalTimezone = false,
 }: DateFormatterParams) {
-  return dayjs(date).utc(formatInLocalTimezone).format(format)
+  return dayjs(date).utc(formatInLocalTimezone).local().format(format)
 }

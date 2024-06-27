@@ -5,6 +5,7 @@ import { ParkingSpaceTab } from './components/ParkingSpaceTab'
 import { ParkingTab } from './components/ParkingTab'
 import { UserTab } from './components/UserTab'
 import { useAuth } from '../../hooks/useAuth'
+import { FinancialTab } from './components/FinancialTab'
 
 export const HomePage = () => {
   const { user } = useAuth()
@@ -22,6 +23,7 @@ export const HomePage = () => {
 
       <Tabs variant="enclosed" colorScheme="blue" mt={8} w="100%" px={4}>
         <TabList>
+          {isManager && <Tab>Financeiro</Tab>}
           {isManager && <Tab>Reservas</Tab>}
           {isManager && <Tab>Vagas</Tab>}
           {isAdmin && <Tab>Usuários</Tab>}
@@ -29,6 +31,12 @@ export const HomePage = () => {
         </TabList>
 
         <TabPanels>
+          {isManager && (
+            <TabPanel>
+              <FinancialTab />
+            </TabPanel>
+          )}
+
           {isManager && (
             <TabPanel>
               <BookingTab />

@@ -136,10 +136,10 @@ export const Header: FC = () => {
               </FormControl>
 
               <FormControl mb={4}>
-                <FormLabel>Valor por Hora (R$)</FormLabel>
+                <FormLabel>Custo por Hora (R$)</FormLabel>
                 <Input
                   type="number"
-                  placeholder="Valor por hora"
+                  placeholder="Custo por hora"
                   disabled={isLoadingParking}
                   value={costPerHour}
                   onChange={(e) => setCostPerHour(e.target.value)}

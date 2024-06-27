@@ -12,7 +12,9 @@ export function useFinishBooking() {
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['active-bookings'] }),
+        queryClient.invalidateQueries({ queryKey: ['finished-bookings'] }),
         queryClient.invalidateQueries({ queryKey: ['parking-spaces'] }),
+        queryClient.invalidateQueries({ queryKey: ['financial-report'] }),
         queryClient.invalidateQueries({
           queryKey: ['available-parking-spaces'],
         }),

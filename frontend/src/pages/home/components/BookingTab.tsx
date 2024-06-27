@@ -57,7 +57,7 @@ export const BookingTab = () => {
               <Th>Placa do carro</Th>
               <Th>Vaga</Th>
               <Th>Entrada</Th>
-              <Th>Valor por hora</Th>
+              <Th>Custo por hora</Th>
             </Tr>
           </Thead>
 
@@ -73,6 +73,7 @@ export const BookingTab = () => {
                     {dateFormatter({
                       date: booking.started_at,
                       formatInLocalTimezone: true,
+                      format: 'DD/MM/YYYY HH:mm',
                     })}
                   </Td>
                   <Td>{costFormatter(booking.cost_per_hour_in_cents)}</Td>
