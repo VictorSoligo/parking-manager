@@ -42,10 +42,12 @@ class GetFinancialReport extends BaseController
             WHERE
                 parking_id = ?
             AND
+                is_finished = ?
+            AND
                 YEAR(CONVERT_TZ(ended_at, '+00:00', '-03:00')) = YEAR(CONVERT_TZ(NOW(), @@session.time_zone, '-03:00'))
             AND
                 MONTH(CONVERT_TZ(ended_at, '+00:00', '-03:00')) = MONTH(CONVERT_TZ(NOW(), @@session.time_zone, '-03:00'));
-        ", [$parkingId]);
+        ", [$parkingId, 1]);
 
         $dayRevenueQuery = $db->query("
             SELECT
@@ -55,8 +57,10 @@ class GetFinancialReport extends BaseController
             WHERE
                 parking_id = ?
             AND
+                is_finished = ?
+            AND
                 DATE(CONVERT_TZ(ended_at, '+00:00', '-03:00')) = DATE(CONVERT_TZ(NOW(), @@session.time_zone, '-03:00'))
-        ", [$parkingId]);
+        ", [$parkingId, 1]);
 
         $totalRevenue = $totalRevenueQuery->getRow()->total_revenue;
         $monthRevenue = $monthRevenueQuery->getRow()->month_revenue;
