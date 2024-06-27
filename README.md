@@ -107,7 +107,6 @@ volumes:
   database:
 ```
 
-<<<<<<< HEAD
 # Executar o Ambiente de Desenvolvimento
 
 ## Pré-requisitos
@@ -145,5 +144,3 @@ Isso iniciará os serviços do PHP(CodeIgniter), MySQL e o frontend do react.
 ### Acesse a aplicação
   - O backend (CodeIgniter) estará disponivel em: 'http://localhost:8000'
   - O frontend(React) estará disponível em: 'http://localhost:3000'
-=======
->>>>>>> dbf408ec6c22bb8b1e049a101069b8c3dbbb1f3b
