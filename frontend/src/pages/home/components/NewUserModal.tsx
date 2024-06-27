@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react'
+import { FC, FormEvent, useEffect, useState } from 'react'
 import {
   Modal,
   ModalOverlay,
@@ -21,15 +21,14 @@ interface NewUserModalProps {
   onClose: () => void
 }
 
-export const NewUserModal: React.FC<NewUserModalProps> = ({
-  isOpen,
-  onClose,
-}) => {
+const parkingIdDefaulValue = -1
+
+export const NewUserModal: FC<NewUserModalProps> = ({ isOpen, onClose }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState('admin')
-  const [parkingId, setParkingId] = useState(-1)
+  const [parkingId, setParkingId] = useState(parkingIdDefaulValue)
 
   const { mutateAsync, isPending } = useCreateUser()
   const { isLoading: isLoadingParkings, data: parkings } = useFetchParkings()
@@ -39,7 +38,7 @@ export const NewUserModal: React.FC<NewUserModalProps> = ({
     setEmail('')
     setPassword('')
     setRole('admin')
-    setParkingId(-1)
+    setParkingId(parkingIdDefaulValue)
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -68,6 +67,12 @@ export const NewUserModal: React.FC<NewUserModalProps> = ({
     clearForm()
     onClose()
   }
+
+  useEffect(() => {
+    if (role === 'admin') {
+      setParkingId(parkingIdDefaulValue)
+    }
+  }, [role])
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -115,8 +120,8 @@ export const NewUserModal: React.FC<NewUserModalProps> = ({
               <FormLabel>Estacionamento</FormLabel>
 
               <Select
-                disabled={isLoadingParkings || role === 'admin'}
                 value={parkingId}
+                disabled={isLoadingParkings || role === 'admin'}
                 onChange={(e) => setParkingId(Number(e.target.value))}
               >
                 <option value={-1}>Selecione um estacionamento</option>
