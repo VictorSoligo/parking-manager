@@ -51,7 +51,7 @@ export const NewParkingModal: FC<NewParkingModalProps> = ({
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={handleCloseForm}>
       <form onSubmit={handleSubmit}>
         <ModalOverlay />
 

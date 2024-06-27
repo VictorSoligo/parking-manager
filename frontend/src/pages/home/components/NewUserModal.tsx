@@ -75,7 +75,7 @@ export const NewUserModal: FC<NewUserModalProps> = ({ isOpen, onClose }) => {
   }, [role])
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={handleCloseForm}>
       <form onSubmit={handleSubmit}>
         <ModalOverlay />
 

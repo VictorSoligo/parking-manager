@@ -48,7 +48,7 @@ export const NewSpaceModal: React.FC<NewSpaceModalProps> = ({
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={handleCloseForm}>
       <form onSubmit={handleSubmit}>
         <ModalOverlay />
 
