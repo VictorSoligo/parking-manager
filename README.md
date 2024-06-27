@@ -47,3 +47,57 @@ CodeIgniter é um framework de desenvolvimento web open-source para PHP, conheci
 
 CodeIgniter OverView (https://codeigniter.com/user_guide/concepts/index.html#)
 
+## Docker (https://docs.docker.com/engine/install/)
+Primeira instalação do docker, é possível executar o script auxiliar **oficial** para facilitar a instalação:
+
+```bash
+$ curl https://get.docker.com/ | sh
+```
+Depois de instalado, talvez seja necessário permitir que o Docker possa executar seus serviços, tradicionalmente através do *systemd*. 
+  * [O que é o systemd?](https://learn.microsoft.com/pt-br/windows/wsl/systemd#what-is-systemd-in-linux)
+  * [Habilitar systemd](https://learn.microsoft.com/pt-br/windows/wsl/systemd#how-to-enable-systemd)
+O Docker inicialmente precisa de privilégio de *super usuário*, nesse sentido, siga as instruções para habilitar acesso ao seu usuario (https://askubuntu.com/a/477554).
+
+```bash
+$ sudo groupadd docker
+$ sudo gpasswd -a $USER docker
+$ docker run hello-world # Se esse comando funcionar corretamente sem 'sudo', parabéns! Está tudo devidamente configurado. 
+```
+
+# Executar o Ambiente de Desenvolvimento
+
+## Requisitos
+
+Certifique-se de que você tenha os seguintes softwares instalados:
+  - Docker (https://www.docker.com/)
+  - Docker Compose
+  - Visual Studio Code
+
+## Passos para Intalação
+
+### Clone o repositório
+``` bash
+git clone https://github.com/VictorSoligo/parking-manager
+cd parking-manager
+```
+
+## Como Rodar o Projeto
+
+### Inicie o Docker
+- Certifique-se de que o Docker está em execução em sua máquina.
+- Certifique-se que nenhum container esteja rodando pelo comando "docker ps". 
+- Se um ou mais containers estiverem rodando, execute o comando "docker stop $(docker ps -a -q)" para parar todas as execuções.
+
+### Visual Studio Code
+- Abra a pasta root do projeto no editor.
+- Certifique-se de que a extensão "Dev Containers" fornecida pela Microsoft esteja instalada no editor.
+- Abra a paleta de comandos acessada pelo atalho "Ctrl shift P".
+- Execute o comando "Dev Containers: Rebuild Without Cache and Reopen in Container".
+- Aguarde as instalações serem concluídas.
+- Em um novo termial execute o comando "chmod +x dev.sh" para dar permissão de execução para o script "dev.sh".
+- Execute o script "dev.sh" pelo comando "./dev.sh".
+
+### Acesse a aplicação
+  - O backend (CodeIgniter) estará disponivel em: 'http://localhost:8080'.
+  - O frontend(React) estará disponível em um navegador na url: 'http://localhost:3000'.
+  - Para logar na aplicação utilize o email "admin@admin.com" e a senha "12345678".
