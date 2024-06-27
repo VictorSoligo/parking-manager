@@ -10,7 +10,12 @@ export function useCreateSpace() {
   const mutation = useMutation({
     mutationFn: createSpace,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['parking-spaces'] })
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['parking-spaces'] }),
+        queryClient.invalidateQueries({
+          queryKey: ['available-parking-spaces'],
+        }),
+      ])
 
       toast({
         title: 'Vaga criada',
